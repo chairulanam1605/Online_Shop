@@ -1,0 +1,168 @@
+.transaksi-container {
+  display: flex; 
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.transaksi-tabs {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.transaksi-tabs button {
+  background: none;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+
+.transaksi-tabs button.active {
+  color: #facc15;
+  border-bottom: 2px solid #facc15;
+}
+
+.transaksi-list .empty {
+  text-align: center;
+  color: #777;
+  margin-top: 30px;
+}
+
+.transaksi-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.transaksi-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.transaksi-header .toko {
+  font-weight: bold;
+  color: #333;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.status.diproses {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status.dikirim {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status.completed {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.produk {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.produk img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1;
+}
+
+.info .nama {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.info .qty,
+.info .harga {
+  font-size: 14px;
+  color: #666;
+}
+
+.transaksi-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.rating {
+  color: #facc15;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .transaksi-card {
+    padding: 8px 10px;
+  }
+
+  .transaksi-header {
+    font-size: 12px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .produk {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .produk img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .info .nama {
+    font-size: 13px;
+  }
+
+  .info .qty,
+  .info .harga {
+    font-size: 11px;
+  }
+
+  .transaksi-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .rating {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,55 @@
+/* src/styles/Admin/TambahKategori.css */
+
+.tambah-kategori {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px 35px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tambah-kategori h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #333;
+}
+
+.tambah-kategori form {
+    display: flex;
+    flex-direction: column;
+}
+
+.tambah-kategori label {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.tambah-kategori input[type="text"] {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.tambah-kategori input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+.tambah-kategori button {
+    padding: 12px;
+    font-size: 15px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tambah-kategori button:hover {
+    background-color: green;
+}

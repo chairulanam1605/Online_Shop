@@ -1,0 +1,79 @@
+.data-produk {
+  padding: 10px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.data-produk h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.data-produk table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.data-produk th{
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.data-produk td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.data-produk th {
+  background-color: #2c3e50;
+  color: white;
+  font-weight: 600;
+}
+
+.data-produk tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.data-produk img {
+  width: 60px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.container {
+  display: flex;
+}
+
+.tambah-barang-btn {
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.aksi button {
+  margin: 2px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #f39c12;
+  color: white;
+}
+
+.hapus-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+

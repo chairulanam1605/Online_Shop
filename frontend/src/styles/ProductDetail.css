@@ -1,0 +1,172 @@
+.product-detail-container {
+  margin: 10% 0;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.product-detail-card {
+  display: flex;
+  gap: 40px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.product-image-section {
+  flex: 1;
+}
+
+.main-image {
+  max-width: 80%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+}
+
+.thumbnail-row {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+.thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.product-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+}
+
+.product-price-details {
+  font-size: 24px;
+  color: #e91e63;
+  font-weight: bold;
+}
+
+.product-desc {
+  font-size: 16px;
+  color: #555;
+}
+
+.add-to-cart-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #218838;
+}
+
+.product-meta {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.tab-section {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background-color: #eee;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+/* Media Query untuk layar tablet dan mobile */
+@media (max-width: 768px) {
+  .product-detail-card {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .main-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .thumbnail-row {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .product-info-section {
+    gap: 12px;
+  }
+
+  .product-title {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .product-price-details {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .product-desc, .product-meta, .product-info-section p {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .add-to-cart-btn {
+    align-self: center;
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Media Query untuk layar sangat kecil (misal <480px) */
+@media (max-width: 480px) {
+  .thumb {
+    width: 50px;
+    height: 50px;
+  }
+
+  .add-to-cart-btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .product-title {
+    font-size: 20px;
+  }
+
+  .product-price-details {
+    font-size: 18px;
+  }
+}

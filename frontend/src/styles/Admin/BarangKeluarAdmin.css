@@ -1,0 +1,60 @@
+.data-barang-keluar {
+  padding: 10px;
+  background: #f9f9f9;
+  min-height: 100vh;
+}
+
+.data-barang-keluar h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.data-barang-keluar table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.data-barang-keluar th, 
+.data-barang-keluar td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.data-barang-keluar th {
+  background: #2c3e50;
+  color: white;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-container label {
+  font-weight: bold;
+}
+
+.filter-container input[type="date"] {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.filter-container button {
+  padding: 6px 14px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filter-container button:hover {
+  background-color: #34495e;
+}
+

@@ -1,0 +1,32 @@
+.shipments-container {
+  padding: 20px;
+}
+
+.shipments-container h1 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.shipments-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.shipments-container th,
+.shipments-container td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.shipments-container th {
+  background: #2c3e50;
+  font-weight: bold;
+}
+
+.shipments-container tr:hover {
+  background: #f9f9f9;
+}
