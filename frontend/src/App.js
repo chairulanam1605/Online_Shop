@@ -15,6 +15,7 @@ import BarangKeluarAdmin from "./pages/Admin/BarangKeluarAdmin";
 import RiwayatTransaksi from "./pages/Admin/RiwayatTransaksi";
 import StatusTransaksi from "./pages/Admin/StatusTransaksi";
 import StatusTransaksiDetail from "./pages/Admin/StatusTransaksiDetail";
+import LaporanLogistikAdmin from "./pages/Admin/LaporanLogistikAdmin";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
@@ -81,6 +82,7 @@ const AppWrapper = () => {
             <Route path="/admin/riwayat-transaksi" element={<RiwayatTransaksi />} />
             <Route path="/admin/status-transaksi" element={<StatusTransaksi />} />
             <Route path="/admin/status-transaksi/:id" element={<StatusTransaksiDetail />} />
+            <Route path="/admin/laporan-logistik" element={<LaporanLogistikAdmin />} />
             <Route path="/distributor/dashboard" element={localStorage.getItem("user_role") === "distributor" ? <DistributorDashboard /> : <Navigate to="/" /> } />
             <Route path="/distributor/pesanan" element={<DistributorOrders />} />
             <Route path="/distributor/riwayat-pengiriman" element={<DistributorShipments />} />

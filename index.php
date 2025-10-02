@@ -959,9 +959,6 @@ $flight->route('POST /Admin/update-status', function() use ($pdo, $flight) {
     }
 });
 
-
-
-
 $flight->route('GET /Admin/status-transaksi', function() use ($pdo, $flight) {
     $stmt = $pdo->prepare("
         SELECT 
@@ -984,6 +981,52 @@ $flight->route('GET /Admin/status-transaksi', function() use ($pdo, $flight) {
     $flight->json($data);
 });
 
+// ====== ADMIN: LAPORAN LOGISTIK ======
+$flight->route('GET /admin/laporan-logistik', function() use ($pdo, $flight) {
+    try {
+        $params = [];
+        $where = [];
+
+        // Filter nama distributor
+        if (!empty($_GET['nama'])) {
+            $where[] = "u.name LIKE :nama";
+            $params[':nama'] = "%" . $_GET['nama'] . "%";
+        }
+
+        // Filter tanggal (format: YYYY-MM-DD)
+        if (!empty($_GET['tanggal'])) {
+            $where[] = "DATE(COALESCE(do.assigned_at, do.completed_at)) = :tanggal";
+            $params[':tanggal'] = $_GET['tanggal'];
+        }
+
+        $sql = "
+            SELECT 
+                DATE(COALESCE(do.assigned_at, do.completed_at)) AS tanggal,
+                u.name AS distributor_name,
+                SUM(CASE WHEN do.status = 'completed' THEN 1 ELSE 0 END) AS total_terkirim,
+                SUM(CASE WHEN do.status = 'dikirim' THEN 1 ELSE 0 END) AS total_dikirim,
+                SUM(CASE WHEN do.status = 'assigned' THEN 1 ELSE 0 END) AS total_belum_dikirim,
+                0 AS total_refund
+            FROM distributor_orders do
+            JOIN users u ON do.distributor_id = u.id
+        ";
+
+        if (!empty($where)) {
+            $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+        $sql .= " GROUP BY tanggal, distributor_name ORDER BY tanggal DESC, distributor_name";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $laporan = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $flight->json($laporan);
+    } catch (Exception $e) {
+        $flight->json(['error' => $e->getMessage()], 500);
+    }
+});
+// End Backend Admin Panel
 
 // Backend Distributor Panel
 // ====== HELPER SESSION ======
@@ -1178,14 +1221,16 @@ $flight->route('POST /distributor/orders/update', function() use ($pdo, $flight)
 
     $data = $flight->request()->data->getData();
     $distributor_order_id = $data['distributor_order_id'] ?? null;
-    $new_status = $data['status'] ?? null;
+    $new_status = strtolower(trim($data['status'] ?? ''));
 
     if (!$distributor_order_id || !$new_status) {
         $flight->json(['error' => 'Parameter tidak lengkap'], 400);
         return;
     }
 
-    if (!in_array($new_status, ['dikirim','completed'])) {
+    // izinkan 3 status
+    $allowed = ['assigned','dikirim','completed'];
+    if (!in_array($new_status, $allowed)) {
         $flight->json(['error' => 'Status tidak valid'], 400);
         return;
     }
@@ -1204,7 +1249,7 @@ $flight->route('POST /distributor/orders/update', function() use ($pdo, $flight)
             $stmt = $pdo->prepare("UPDATE distributor_orders SET status = ?, completed_at = NOW() WHERE id = ?");
             $stmt->execute([$new_status, $distributor_order_id]);
         } else {
-            $stmt = $pdo->prepare("UPDATE distributor_orders SET status = ? WHERE id = ?");
+            $stmt = $pdo->prepare("UPDATE distributor_orders SET status = ?, completed_at = NULL WHERE id = ?");
             $stmt->execute([$new_status, $distributor_order_id]);
         }
 
@@ -1214,45 +1259,59 @@ $flight->route('POST /distributor/orders/update', function() use ($pdo, $flight)
     }
 });
 
-// ====== DISTRIBUTOR: UPLOAD BUKTI & SELESAI ======
+
+// ====== DISTRIBUTOR: COMPLETE ORDER DENGAN BUKTI FOTO ======
 $flight->route('POST /distributor/orders/complete', function() use ($pdo, $flight) {
     if (!require_distributor_session($flight, $pdo)) return;
     $distributor_id = $_SESSION['user_id'];
 
-    $distributor_order_id = $_POST['distributor_order_id'] ?? null;
-    if (!$distributor_order_id || !isset($_FILES['proof_image'])) {
-        $flight->json(['error' => 'Parameter tidak lengkap'], 400);
+    if (empty($_FILES['proof_image']) || empty($_POST['distributor_order_id'])) {
+        $flight->json(['error' => 'File bukti foto atau ID order tidak ada'], 400);
         return;
     }
 
-    $file = $_FILES['proof_image'];
-    $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $newName = uniqid("proof_") . "." . $ext;
-    $uploadPath = __DIR__ . "/../uploads/shipments/" . $newName;
-
-    if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
-        $flight->json(['error' => 'Gagal upload file'], 500);
-        return;
-    }
+    $distributor_order_id = $_POST['distributor_order_id'];
 
     try {
+        // cek apakah order benar milik distributor
         $stmt = $pdo->prepare("SELECT id FROM distributor_orders WHERE id = ? AND distributor_id = ? LIMIT 1");
         $stmt->execute([$distributor_order_id, $distributor_id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$row) {
+        if (!$order) {
             $flight->json(['error' => 'Order tidak ditemukan atau bukan milik Anda'], 404);
             return;
         }
 
-        $stmt = $pdo->prepare("UPDATE distributor_orders SET status = 'completed', completed_at = NOW(), proof_image = ? WHERE id = ?");
-        $stmt->execute([$newName, $distributor_order_id]);
+        // buat nama file unik
+        $targetDir = __DIR__ . "/uploads/proof/"; // absolute path
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
 
-        $flight->json(['success' => true]);
+        $filename = "proof_" . $distributor_order_id . "_" . time() . ".png";
+        $targetFile = $targetDir . $filename;
+
+        // simpan file
+        if (!move_uploaded_file($_FILES['proof_image']['tmp_name'], $targetFile)) {
+            $flight->json(['error' => 'Gagal menyimpan file'], 500);
+            return;
+        }
+
+        // update status + bukti foto (hanya filename ke DB)
+        $stmt = $pdo->prepare("
+            UPDATE distributor_orders 
+            SET status = 'completed', proof_image = ?, completed_at = NOW() 
+            WHERE id = ?
+        ");
+        $stmt->execute([$filename, $distributor_order_id]);
+
+        $flight->json(['success' => true, 'message' => 'Pesanan selesai dengan bukti foto']);
     } catch (Exception $e) {
         $flight->json(['error' => 'Server error: ' . $e->getMessage()], 500);
     }
 });
+
 
 // ====== DISTRIBUTOR: RIWAYAT ======
 $flight->route('GET /distributor/history', function() use ($pdo, $flight) {
@@ -1264,6 +1323,7 @@ $flight->route('GET /distributor/history', function() use ($pdo, $flight) {
             SELECT do.id AS distributor_order_id,
                    do.transaction_id,
                    do.completed_at,
+                   do.proof_image,  
                    t.total_price,
                    u.name AS customer_name,
                    u.address AS customer_address
@@ -1281,6 +1341,7 @@ $flight->route('GET /distributor/history', function() use ($pdo, $flight) {
         $flight->json(['error' => 'Server error: ' . $e->getMessage()], 500);
     }
 });
+
 
 
 // ====================== PROFILE DISTRIBUTOR ======================

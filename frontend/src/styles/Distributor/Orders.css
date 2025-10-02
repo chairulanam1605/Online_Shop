@@ -154,3 +154,107 @@
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Modal kamera */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Video kamera */
+video {
+  width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  background: #000;
+  margin-bottom: 15px;
+}
+
+/* Preview foto */
+.preview-img {
+  width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.no-preview {
+  color: #888;
+  font-style: italic;
+  margin: 10px 0;
+}
+
+/* Tombol aksi di modal */
+.modal-actions button,
+.modal-content button {
+  margin: 5px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-actions button:hover,
+.modal-content button:hover {
+  opacity: 0.85;
+}
+
+/* Style tombol khusus */
+button {
+  background: #1e90ff;
+  color: white;
+}
+
+button.btn-upload {
+  background: #28a745; /* hijau */
+}
+
+button.btn-cancel {
+  background: #dc3545; /* merah */
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animasi modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

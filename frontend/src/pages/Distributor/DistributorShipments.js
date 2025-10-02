@@ -7,6 +7,7 @@ const API_URL = "http://localhost/Online_Shop";
 
 const DistributorShipments = () => {
   const [shipments, setShipments] = useState([]);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/distributor/history`, { credentials: "include" })
@@ -22,7 +23,7 @@ const DistributorShipments = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>No</th>
               <th>Pelanggan</th>
               <th>Alamat</th>
               <th>Total</th>
@@ -34,20 +35,28 @@ const DistributorShipments = () => {
             {shipments.length > 0 ? (
               shipments.map((ship, i) => (
                 <tr key={i}>
-                  <td>#{ship.distributor_order_id}</td>
+                  {/* Nomor urut */}
+                  <td>{i + 1}</td>
                   <td>{ship.customer_name}</td>
                   <td>{ship.customer_address}</td>
-                  <td>Rp {parseInt(ship.total_price).toLocaleString()}</td>
+                  <td>Rp {parseInt(ship.total_price).toLocaleString("id-ID")}</td>
                   <td>
                     {ship.completed_at
-                      ? new Date(ship.completed_at).toLocaleDateString()
+                      ? new Date(ship.completed_at).toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })
                       : "-"}
                   </td>
                   <td>
                     {ship.proof_image ? (
-                      <a href={`${API_URL}/uploads/proofs/${ship.proof_image}`} target="_blank" rel="noopener noreferrer">
-                        Lihat Foto
-                      </a>
+                      <img
+                        src={`${API_URL}/uploads/proof/${ship.proof_image}`}
+                        alt="Bukti Foto"
+                        className="proof-thumbnail"
+                        onClick={() => setPreviewImage(`${API_URL}/uploads/proof/${ship.proof_image}`)}
+                      />
                     ) : (
                       "-"
                     )}
@@ -56,11 +65,27 @@ const DistributorShipments = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5">Belum ada pengiriman</td>
+                <td colSpan="6">Belum ada pengiriman</td>
               </tr>
             )}
           </tbody>
         </table>
+
+        {/* Modal Preview Foto */}
+        {previewImage && (
+          <div
+            className="modal-overlay"
+            onClick={() => setPreviewImage(null)}
+          >
+            <div className="modal-content">
+              <img
+                src={previewImage}
+                alt="Preview Bukti"
+                className="proof-full"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </DistributorSidebar>
   );

@@ -1,5 +1,5 @@
 // src/pages/distributor/DistributorOrders.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DistributorSidebar from "../../components/Distributor/DistributorSidebar";
 import "../../styles/Distributor/Orders.css";
 
@@ -8,27 +8,28 @@ const API_URL = "http://localhost/Online_Shop";
 const DistributorOrders = () => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadFile, setUploadFile] = useState(null);
+
+  // Kamera
+  const [showCamera, setShowCamera] = useState(false);
+  const [photo, setPhoto] = useState(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
 
   // fetch list orders
   const fetchOrders = () => {
     fetch(`${API_URL}/distributor/orders`, { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Orders response:", data); // DEBUG
-
         if (data.success && Array.isArray(data.orders)) {
-          setOrders(data.orders); // kalau backend pakai {success, orders}
+          setOrders(data.orders);
         } else if (Array.isArray(data)) {
-          setOrders(data); // kalau backend langsung return array
+          setOrders(data);
         } else {
           setOrders([]);
         }
       })
       .catch((err) => console.error("Error fetching orders:", err));
   };
-
 
   useEffect(() => {
     fetchOrders();
@@ -38,11 +39,17 @@ const DistributorOrders = () => {
   const fetchOrderDetail = (id) => {
     fetch(`${API_URL}/distributor/orders/${id}`, { credentials: "include" })
       .then((res) => res.json())
-      .then((data) => setSelectedOrder(data))
+      .then((data) => {
+        if (data.success) {
+          setSelectedOrder(data.order);
+        } else {
+          alert(data.error || "Gagal memuat detail order");
+        }
+      })
       .catch((err) => console.error("Error fetching order detail:", err));
   };
 
-  // update status order (untuk assigned → dikirim)
+  // update status order
   const updateOrderStatus = (orderId, status) => {
     fetch(`${API_URL}/distributor/orders/update`, {
       method: "POST",
@@ -63,34 +70,76 @@ const DistributorOrders = () => {
       .catch((err) => console.error("Error updating status:", err));
   };
 
-  // klik "Tandai Selesai" → buka modal upload
-  const handleCompleteClick = () => {
-    setShowUploadModal(true);
+  // === Kamera ===
+  const openCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      }
+    } catch (err) {
+      console.error("Tidak bisa akses kamera:", err);
+      alert("Tidak bisa akses kamera. Pastikan izinnya sudah diberikan.");
+    }
   };
 
-  // upload bukti foto
-  const handleUploadProof = () => {
-    if (!uploadFile) {
-      alert("Harap pilih foto terlebih dahulu!");
-      return;
+  const closeCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
     }
+    setShowCamera(false);
+    setPhoto(null);
+  };
+
+  const handleTakePhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    const context = canvasRef.current.getContext("2d");
+    canvasRef.current.width = videoRef.current.videoWidth;
+    canvasRef.current.height = videoRef.current.videoHeight;
+    context.drawImage(
+      videoRef.current,
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
+
+    const imageData = canvasRef.current.toDataURL("image/png");
+    setPhoto(imageData);
+
+    // Stop kamera setelah foto diambil
+    if (videoRef.current.srcObject) {
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+    }
+  };
+
+  const handleConfirmPhoto = () => {
+    if (!photo || !selectedOrder) return;
 
     const formData = new FormData();
     formData.append("distributor_order_id", selectedOrder.distributor_order_id);
-    formData.append("proof_image", uploadFile);
 
-    fetch(`${API_URL}/distributor/orders/complete`, {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    })
+    // Convert base64 → blob
+    fetch(photo)
+      .then((res) => res.blob())
+      .then((blob) => {
+        formData.append("proof_image", blob, "proof.png");
+
+        return fetch(`${API_URL}/distributor/orders/complete`, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        });
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
           alert("Pesanan ditandai selesai dengan bukti foto!");
-          setShowUploadModal(false);
+          setShowCamera(false);
+          setPhoto(null);
           setSelectedOrder(null);
-          setUploadFile(null);
           fetchOrders();
         } else {
           alert(data.error || "Gagal upload bukti.");
@@ -106,7 +155,7 @@ const DistributorOrders = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
+              <th>No</th>
               <th>Pelanggan</th>
               <th>Total</th>
               <th>Tanggal</th>
@@ -118,14 +167,19 @@ const DistributorOrders = () => {
             {orders.length > 0 ? (
               orders.map((order, i) => (
                 <tr key={i}>
-                  <td>#{order.distributor_order_id}</td>
+                  {/* Nomor urut */}
+                  <td>{i + 1}</td>
                   <td>{order.customer_name}</td>
                   <td>
                     Rp {parseInt(order.total_price || 0).toLocaleString("id-ID")}
                   </td>
                   <td>
                     {order.assigned_at
-                      ? new Date(order.assigned_at).toLocaleDateString()
+                      ? new Date(order.assigned_at).toLocaleDateString("id-ID", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })
                       : "-"}
                   </td>
                   <td>{order.status}</td>
@@ -167,9 +221,8 @@ const DistributorOrders = () => {
               </p>
               <p>
                 <strong>Total:</strong>{" "}
-                Rp {parseInt(selectedOrder.total_price).toLocaleString("id-ID")}
+                Rp {Number(selectedOrder.total_price || 0).toLocaleString("id-ID")}
               </p>
-
               <h3>Item Pesanan</h3>
               <ul>
                 {selectedOrder.items?.map((item, idx) => (
@@ -195,7 +248,14 @@ const DistributorOrders = () => {
                   </button>
                 )}
                 {selectedOrder.status === "dikirim" && (
-                  <button onClick={handleCompleteClick}>Tandai Selesai</button>
+                  <button
+                    onClick={() => {
+                      setShowCamera(true);
+                      openCamera();
+                    }}
+                  >
+                    Upload Bukti
+                  </button>
                 )}
                 <button onClick={() => setSelectedOrder(null)}>Tutup</button>
               </div>
@@ -203,44 +263,37 @@ const DistributorOrders = () => {
           </div>
         )}
 
-        {/* Modal Upload Bukti */}
-        {showUploadModal && (
+        {/* Modal Kamera */}
+        {showCamera && (
           <div className="modal-overlay">
             <div className="modal-content">
-              <h2>Upload Bukti Pengiriman</h2>
+              <h2>Ambil Foto Bukti</h2>
 
-              {/* Preview Foto */}
-              <div className="file-preview">
-                {uploadFile ? (
-                  <img
-                    src={URL.createObjectURL(uploadFile)}
-                    alt="Preview"
-                    className="preview-img"
-                  />
-                ) : (
-                  <p className="no-preview">Belum ada foto dipilih</p>
-                )}
-              </div>
+              {!photo ? (
+                <video ref={videoRef} autoPlay playsInline style={{ width: "100%" }} />
+              ) : (
+                <img src={photo} alt="Preview" style={{ width: "100%" }} />
+              )}
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setUploadFile(e.target.files[0])}
-              />
+              <canvas ref={canvasRef} style={{ display: "none" }} />
 
               <div className="modal-actions">
-                <button onClick={handleUploadProof} className="btn-upload">
-                  Upload & Selesai
-                </button>
-                <button
-                  onClick={() => {
-                    setShowUploadModal(false);
-                    setUploadFile(null);
-                  }}
-                  className="btn-cancel"
-                >
-                  Batal
-                </button>
+                {!photo ? (
+                  <button onClick={handleTakePhoto}>📸 Ambil Foto</button>
+                ) : (
+                  <>
+                    <button onClick={handleConfirmPhoto}>✅ Konfirmasi</button>
+                    <button
+                      onClick={() => {
+                        setPhoto(null);
+                        openCamera(); // restart kamera untuk foto ulang
+                      }}
+                    >
+                      🔄 Foto Ulang
+                    </button>
+                  </>
+                )}
+                <button onClick={closeCamera}>Batal</button>
               </div>
             </div>
           </div>
