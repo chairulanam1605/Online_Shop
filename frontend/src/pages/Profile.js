@@ -124,8 +124,8 @@ const Profile = () => {
     <>
       <Navbar />
       <div className="profile-container">
-        <div className="profile-card">
-          <div className="profile-image">
+        <div className="profile-card-customer">
+          <div className="profile-image-customer">
             <img 
               src={
                 previewImage
@@ -140,7 +140,7 @@ const Profile = () => {
               }}
               style={{ cursor: "pointer" }}
             />
-            <label className="upload-label">
+            <label className="upload-label-customer">
               <input type="file" accept="image/*" onChange={handleImageChange} />
               Ubah Foto Profile
             </label>

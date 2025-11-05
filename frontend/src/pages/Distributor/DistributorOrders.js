@@ -1,7 +1,7 @@
 // src/pages/distributor/DistributorOrders.js
 import React, { useEffect, useState, useRef } from "react";
 import DistributorSidebar from "../../components/Distributor/DistributorSidebar";
-import "../../styles/Distributor/Orders.css";
+import "../../styles/Distributor/DistributorOrders.css";
 
 const API_URL = "http://localhost/Online_Shop";
 

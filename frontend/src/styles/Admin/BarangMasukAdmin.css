@@ -1,59 +1,194 @@
-.barang-masuk {
-  padding: 10px;
-  background-color: #f9f9f9;
+.barang-masuk-wrapper {
+  padding: 2rem;
+  background-color: #f9fafc;
   min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #1f2937;
 }
 
-.barang-masuk h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
+/* Header */
+.barang-masuk-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
 }
 
-.tambah-barang-btn {
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.barang-masuk table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-}
-
-.barang-masuk th,
-.barang-masuk td {
-  border: 1px solid #ddd;
-  padding: 12px 15px;
-  text-align: center;
-}
-
-.barang-masuk th {
-  background-color: #2c3e50;
-  color: white;
-}
-
-.filter-container {
+.title-section-barang-masuk {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
 }
 
-.filter-container input {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.header-icon-barang-masuk {
+  font-size: 2rem;
+  color: #3b82f6;
+  background: #e0ecff;
+  padding: 0.8rem;
+  border-radius: 12px;
 }
 
-.filter-btn {
-  background-color: #3498db;
-  color: white;
+.barang-masuk-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.barang-masuk-header p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Tambah barang button */
+.tambah-barang-masuk-btn {
+  background-color: #3b82f6;
+  color: #fff;
   border: none;
-  padding: 7px 14px;
-  border-radius: 5px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.25);
+}
+
+.tambah-barang-masuk-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Filter section */
+.filter-container-barang-masuk {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  background: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group-barang-masuk {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group-barang-masuk label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.filter-group-barang-masuk input[type="date"] {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.filter-group-barang-masuk input[type="date"]:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.filter-barang-masuk-btn {
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.filter-barang-masuk-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* Table */
+.table-container-barang-masuk {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.modern-table-barang-masuk {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modern-table-barang-masuk thead {
+  background-color: #f1f5f9;
+}
+
+.modern-table-barang-masuk th {
+  padding: 0.9rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.modern-table-barang-masuk td {
+  padding: 0.8rem;
+  border-top: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.modern-table-barang-masuk tr:hover td {
+  background-color: #f9fafb;
+}
+
+.empty-row-barang-masuk td {
+  text-align: center;
+  padding: 1rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .barang-masuk-wrapper {
+    padding: 1rem;
+  }
+
+  .barang-masuk-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .filter-container-barang-masuk {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-barang-masuk-btn,
+  .tambah-barang-masuk-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

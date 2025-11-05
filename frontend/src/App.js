@@ -16,6 +16,8 @@ import RiwayatTransaksi from "./pages/Admin/RiwayatTransaksi";
 import StatusTransaksi from "./pages/Admin/StatusTransaksi";
 import StatusTransaksiDetail from "./pages/Admin/StatusTransaksiDetail";
 import LaporanLogistikAdmin from "./pages/Admin/LaporanLogistikAdmin";
+import RefundAdmin from "./pages/Admin/RefundAdmin";
+import DetailRefundAdmin from "./pages/Admin/DetailRefundAdmin";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
@@ -23,6 +25,8 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Cart from "./pages/Cart";
 import Belanja from "./pages/Belanja";
 import Transaksi from "./pages/Transaksi";
+import DetailTransaksi from "./pages/DetailTransaksi";
+import Refund from "./pages/Refund";
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import ProductDetail from "./pages/ProductDetail";
@@ -31,6 +35,7 @@ import DistributorDashboard from "./pages/Distributor/Dashboard";
 import DistributorOrders from "./pages/Distributor/DistributorOrders";
 import DistributorShipments from "./pages/Distributor/DistributorShipments";
 import DistributorProfile from "./pages/Distributor/DistributorProfile";
+import RefundDistributor from "./pages/Distributor/RefundDistributor";
 import "./App.css";
 
 
@@ -65,6 +70,8 @@ const AppWrapper = () => {
             <Route path="/cart" element={<Cart />} />
             <Route path="/belanja" element={<Belanja />} />
             <Route path="/transaksi" element={<Transaksi />} />
+            <Route path="/transaction/:id" element={<DetailTransaksi />} />
+            <Route path="/refund/:id" element={<Refund />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/products/:id" element={<ProductDetail />} />
             <Route path="/checkout" element={<Checkout />} />
@@ -83,10 +90,13 @@ const AppWrapper = () => {
             <Route path="/admin/status-transaksi" element={<StatusTransaksi />} />
             <Route path="/admin/status-transaksi/:id" element={<StatusTransaksiDetail />} />
             <Route path="/admin/laporan-logistik" element={<LaporanLogistikAdmin />} />
+            <Route path="/admin/refund-admin" element={<RefundAdmin />} />
+            <Route path="/admin/detail-refund/:id" element={<DetailRefundAdmin />} />
             <Route path="/distributor/dashboard" element={localStorage.getItem("user_role") === "distributor" ? <DistributorDashboard /> : <Navigate to="/" /> } />
             <Route path="/distributor/pesanan" element={<DistributorOrders />} />
             <Route path="/distributor/riwayat-pengiriman" element={<DistributorShipments />} />
             <Route path="/distributor/profile" element={<DistributorProfile />} />
+            <Route path="/distributor/refund" element={<RefundDistributor />} />
             </Routes>
       </div>
     </div>

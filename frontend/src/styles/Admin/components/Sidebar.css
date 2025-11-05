@@ -1,77 +1,148 @@
-/* src/styles/AdminLayout.css */
-
+/* =============================
+   ⚙️ Struktur utama layout admin
+============================= */
 .admin-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  margin: 0;
+  font-family: "Inter", sans-serif;
+  color: #111827;
+  background-color: #f9fafb;
 }
 
 .admin-navbar {
-  background-color: #2c3e50;
-  color: #fff;
-  padding: 1rem 2rem;
-  font-size: 20px;
+  background-color: #2563eb;
+  color: white;
+  padding: 16px 32px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* =============================
+   📦 Struktur konten utama
+============================= */
 .admin-main {
   display: flex;
   flex: 1;
+  overflow: hidden;
 }
 
+/* =============================
+   🧭 Sidebar
+============================= */
 .admin-sidebar {
-  width: 200px;
-  background-color: #34495e;
-  color: #fff;
+  width: 260px;
+  background-color: #1e293b; /* abu gelap elegan */
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
   padding: 20px 0;
+  overflow-y: auto;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
 }
 
 .admin-sidebar ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .admin-sidebar li {
-  margin-bottom: 16px;
+  margin: 4px 0;
 }
 
 .admin-sidebar a {
-  color: #ecf0f1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #e2e8f0;
   text-decoration: none;
-  display: block;
-  padding: 10px 20px;
-  transition: background 0.3s;
+  font-size: 0.97rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
 }
 
+/* Hover dan active effect */
 .admin-sidebar a:hover {
-  background-color: #2c3e50;
+  background-color: #334155;
+  color: #ffffff;
+  border-left-color: #3b82f6;
 }
 
+/* SVG icons */
+.admin-sidebar .icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-sidebar svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.admin-sidebar a:hover svg {
+  color: #ffffff;
+}
+
+/* =============================
+   📄 Konten halaman
+============================= */
 .admin-content {
   flex: 1;
-  padding: 20px;
-  background-color: #f8f9fa;
+  padding: 32px;
+  overflow-y: auto;
+  background-color: #f9fafb;
 }
 
-.admin-sidebar a {
-  color: #ecf0f1;
-  text-decoration: none;
-  display: flex;              /* sejajarkan icon dan teks */
-  align-items: center;        /* vertikal rata tengah */
-  gap: 8px;                   /* jarak antara icon dan teks */
-  padding: 10px 20px;
-  transition: background 0.3s;
-  font-size: 14px;            /* samakan ukuran font */
+/* =============================
+   🔐 Tombol logout
+============================= */
+.admin-sidebar li:last-child a {
+  margin-top: 12px;
+  border-top: 1px solid #475569;
+  color: #f87171;
 }
 
-.admin-sidebar a:hover {
-  background-color: #2c3e50;
+.admin-sidebar li:last-child a:hover {
+  background-color: #b91c1c;
+  border-left-color: transparent;
+  color: white;
 }
 
-.admin-sidebar .icon svg {
-  width: 18px;    /* atur ukuran icon */
-  height: 18px;
-  flex-shrink: 0; /* cegah icon ikut mengecil */
-}
+/* =============================
+   📱 Responsif (sidebar collapse)
+============================= */
+@media (max-width: 900px) {
+  .admin-sidebar {
+    width: 72px;
+  }
 
+  .admin-sidebar a {
+    padding: 12px;
+    justify-content: center;
+  }
+
+  .admin-sidebar a span.icon {
+    margin: 0;
+  }
+
+  .admin-sidebar a::after {
+    content: attr(data-label);
+    display: none;
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+}

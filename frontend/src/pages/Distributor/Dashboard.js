@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DistributorSidebar from "../../components/Distributor/DistributorSidebar";
+import { FaTasks, FaTruck, FaCheckCircle } from "react-icons/fa";
 import "../../styles/Distributor/Dashboard.css";
 
 const API_URL = "http://localhost/Online_Shop";
@@ -24,24 +25,37 @@ const DistributorDashboard = () => {
   return (
     <DistributorSidebar>
       <div className="dashboard-container">
-        <h1>Dashboard Distributor</h1>
-        <p className="subtitle">Selamat datang di panel distributor Anda 🎉</p>
+        <header className="dashboard-header">
+          <div>
+            <h1>Dashboard Distributor</h1>
+            <p className="subtitle">Selamat datang di panel distributor Anda 🎉</p>
+          </div>
+        </header>
 
         {loading ? (
-          <p>Loading data...</p>
+          <div className="loading">Memuat data...</div>
         ) : (
           <div className="stats-grid">
             <div className="stat-card pending">
-              <h3>Ditugaskan</h3>
-              <p>{stats.total_assigned || 0}</p>
+              <div className="stat-icon"><FaTasks /></div>
+              <div>
+                <h3>Ditugaskan</h3>
+                <p>{stats.total_assigned || 0}</p>
+              </div>
             </div>
             <div className="stat-card in-delivery">
-              <h3>Dikirim</h3>
-              <p>{stats.total_dikirim || 0}</p>
+              <div className="stat-icon"><FaTruck /></div>
+              <div>
+                <h3>Dikirim</h3>
+                <p>{stats.total_dikirim || 0}</p>
+              </div>
             </div>
             <div className="stat-card completed">
-              <h3>Selesai</h3>
-              <p>{stats.total_completed || 0}</p>
+              <div className="stat-icon"><FaCheckCircle /></div>
+              <div>
+                <h3>Selesai</h3>
+                <p>{stats.total_completed || 0}</p>
+              </div>
             </div>
           </div>
         )}

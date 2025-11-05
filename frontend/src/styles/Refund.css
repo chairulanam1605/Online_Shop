@@ -1,0 +1,107 @@
+/* Refund.css */
+.refund-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  margin-top: 80px;
+  background-color: #f1eaea;
+  min-height: 80vh;
+  font-family: "Poppins", sans-serif;
+}
+
+.refund-card {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+}
+
+.refund-title {
+  color: #070602;
+  font-weight: 700;
+  margin-bottom: 25px;
+  border-left: 5px solid #d4a017;
+  padding-left: 12px;
+}
+
+.refund-form .form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.refund-form label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.refund-form select,
+.refund-form textarea,
+.refund-form input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.refund-form select:focus,
+.refund-form textarea:focus,
+.refund-form input[type="file"]:focus {
+  border-color: #d4a017;
+  outline: none;
+  box-shadow: 0 0 4px rgba(212, 160, 23, 0.3);
+}
+
+.file-list {
+  margin-top: 10px;
+  background: #fdf6dd;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.file-item {
+  font-size: 14px;
+  color: #555;
+  padding: 4px 0;
+}
+
+.refund-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.btn-submit {
+  background-color: #d4a017;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: #b8860b;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-cancel:hover {
+  background-color: #aaa;
+}

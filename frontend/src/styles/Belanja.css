@@ -1,0 +1,182 @@
+/* Struktur dasar agar footer selalu di bawah */
+.belanja-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.belanja-container {
+  flex: 1;
+  background-color: #f1eaea;
+  padding-top: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* === Search Bar === */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 90px;
+  margin-bottom: 10px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.8px solid #d3d3d3;
+  border-radius: 28px;
+  padding: 6px 14px;
+  width: 700px;
+  height: 38px;
+  transition: all 0.3s ease;
+  box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.03);
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-size: 17px;
+  color: #666;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  background: none;
+  height: 100%;
+}
+
+.search-box:focus-within {
+  border-color: #f1b500;
+  box-shadow: 0 0 6px rgba(241, 181, 0, 0.4);
+}
+
+/* === Filter Dropdown === */
+.filter-belanja-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 50px;
+  margin-bottom: 25px;
+}
+
+.filter-belanja-dropdown {
+  border: 2px solid #d3d3d3;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-belanja-dropdown:hover {
+  border-color: #f1b500;
+  background: #fffaf0;
+}
+
+/* === Produk Grid === */
+.product-grid-belanja {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 26px;
+  justify-items: center;
+  padding: 30px 30px 60px; /* beri ruang bawah agar tidak menempel ke footer */
+}
+
+/* === Kartu Produk === */
+.product-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  padding: 14px 10px 16px;
+  width: 190px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  background-color: #fffdf5;
+}
+
+.product-card img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+/* Rating di atas nama produk */
+.rating {
+  color: #ffb703;
+  font-size: 15px;
+  margin: 4px 0 6px;
+}
+
+.rating span {
+  color: #666;
+  font-size: 11px;
+  margin-left: 3px;
+}
+
+.product-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 2px 0 6px;
+  height: 34px;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.product-price-card-shop {
+  color: #e63946;
+  font-weight: 700;
+  font-size: 18px; /* diperbesar */
+  margin: 6px 0 10px;
+}
+
+/* === Responsif === */
+@media (max-width: 768px) {
+  .filter-container {
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .search-box {
+    width: 90%;
+  }
+
+  .product-grid-belanja {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 18px;
+  }
+
+  .product-card {
+    width: 150px;
+  }
+
+  .product-card img {
+    height: 100px;
+  }
+
+  .product-price-card-shop {
+    font-size: 15px;
+  }
+}

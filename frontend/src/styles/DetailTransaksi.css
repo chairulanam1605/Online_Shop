@@ -1,0 +1,205 @@
+/* ===== Latar belakang halaman penuh ===== */
+.detail-transaksi-page {
+  background-color: #f1eaea;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  padding-top: 110px;
+  
+}
+
+/* ===== Container Utama ===== */
+.detail-transaksi-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  color: #2c2c2c;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== Header ===== */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 10px;
+}
+
+.detail-header h2 {
+  font-size: 22px;
+  color: #070602;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.status-badge.Completed { background-color: #28a745; }
+.status-badge.Dikirim { background-color: #007bff; }
+.status-badge.Diproses { background-color: #ffb300; }
+.status-badge.Dipesan { background-color: #9c9c9c; }
+.status-badge.Refund { background-color: #dc3545; }
+
+/* ===== Grid Konten ===== */
+.detail-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+/* ===== Section ===== */
+.section {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(2, 2, 2, 0.153);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.section h3 {
+  color: #070602;
+  font-size: 18px;
+  margin-bottom: 12px;
+  border-left: 4px solid #b8860b;
+  padding-left: 8px;
+  font-weight: 600;
+}
+
+/* ===== Informasi Pembeli ===== */
+.info-grid p {
+  margin: 6px 0;
+  font-size: 14.5px;
+}
+
+/* ===== Daftar Barang ===== */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item-card {
+  display: flex;
+  align-items: center;
+  background: #fff8e1;
+  border: 1px solid #f0d16c;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
+
+.item-card:hover {
+  background-color: #fff4d0;
+}
+
+.item-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 14px;
+  border: 1px solid #ddd;
+}
+
+/* ===== Info Pengiriman ===== */
+.info-pengiriman p {
+  margin: 5px 0;
+  font-size: 14.5px;
+}
+
+/* ===== Refund ===== */
+.refund-card-detail-transaksi {
+  background: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
+
+.refund-card-detail-transaksi p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.refund-media a {
+  display: inline-block;
+  color: #070602;
+  margin-right: 8px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.refund-media a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Tombol ===== */
+.button-group-detail {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+button {
+  border: none;
+  outline: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+/* Tombol utama */
+.btn-primary-detail {
+  background-color: #c49b0b;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary-detail:hover {
+  background-color: #d4aa0f;
+  transform: translateY(-2px);
+}
+
+/* Tombol sekunder */
+.btn-secondary-detail {
+  background-color: #e3e3e3;
+  color: #333;
+}
+
+.btn-secondary-detail:hover {
+  background-color: #d6d6d6;
+  transform: translateY(-2px);
+}
+
+/* ===== Responsif ===== */
+@media (max-width: 900px) {
+  .detail-content {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group-detail {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

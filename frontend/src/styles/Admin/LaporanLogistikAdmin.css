@@ -1,35 +1,121 @@
 .laporan-container {
-  padding: 20px;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+  background-color: #f9fafc;
+  min-height: 100vh;
 }
 
 .laporan-container h1 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.laporan-container table {
-  width: 100%;
-  border-collapse: collapse;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.laporan-container th,
-.laporan-container td {
-  border: 1px solid #ddd;
-  padding: 10px;
+  font-size: 1.8rem;
+  color: #1f2937;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
-.laporan-container th {
-  background-color: #2c3e50;
+/* ===== FILTER ===== */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.filter-container input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.filter-container input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.filter-container button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.3rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.filter-container button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* ===== TABEL ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+thead {
+  background-color: #2563eb;
   color: white;
 }
 
-.laporan-container tr:nth-child(even) {
-  background-color: #f9f9f9;
+thead th {
+  padding: 0.9rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-.laporan-container tr:hover {
-  background-color: #f1f1f1;
+tbody td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+tbody tr:hover {
+  background-color: #f3f4f6;
+  transition: background 0.2s ease;
+}
+
+/* ===== STATE KOSONG / LOADING ===== */
+.laporan-container p {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .laporan-container {
+    padding: 1rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-container input,
+  .filter-container button {
+    width: 100%;
+  }
 }

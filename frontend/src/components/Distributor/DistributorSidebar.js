@@ -1,32 +1,40 @@
 // src/components/distributor/DistributorSidebar.js
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../../styles/Distributor/components/DistributorSidebard.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {FaTachometerAlt, FaShoppingCart, FaTruck, FaFileInvoice, FaUser, FaSignOutAlt,} from "react-icons/fa";
+import "../../styles/Distributor/components/DistributorSidebar.css";
 
 const API_URL = "http://localhost/Online_Shop";
 
 const DistributorSidebar = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
       await fetch(API_URL + "/logout", {
         method: "POST",
-        credentials: "include", // hapus session di server
+        credentials: "include",
       });
 
-      // Bersihkan local storage
       localStorage.removeItem("user_id");
       localStorage.removeItem("user_name");
       localStorage.removeItem("role");
 
-      // Redirect ke login
       navigate("/login");
     } catch (err) {
       console.error("Logout gagal:", err);
-      navigate("/login"); // fallback redirect
+      navigate("/login");
     }
   };
+
+  const menuItems = [
+    { path: "/distributor/dashboard", label: "Dashboard", icon: <FaTachometerAlt /> },
+    { path: "/distributor/pesanan", label: "Pesanan", icon: <FaShoppingCart /> },
+    { path: "/distributor/riwayat-pengiriman", label: "Riwayat Pengiriman", icon: <FaTruck /> },
+    { path: "/distributor/refund", label: "Daftar Refund", icon: <FaFileInvoice /> },
+    { path: "/distributor/profile", label: "Profil", icon: <FaUser /> },
+  ];
 
   return (
     <div className="distributor-layout">
@@ -36,35 +44,22 @@ const DistributorSidebar = ({ children }) => {
       <div className="distributor-main">
         <aside className="distributor-sidebar">
           <ul>
+            {menuItems.map((item, idx) => (
+              <li key={idx}>
+                <Link
+                  to={item.path}
+                  className={location.pathname === item.path ? "active" : ""}
+                >
+                  <span className="icon">{item.icon}</span>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
             <li>
-              <Link to="/distributor/dashboard">
-                <span className="icon">📊</span>
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/distributor/pesanan">
-                <span className="icon">🛒</span>
-                Pesanan
-              </Link>
-            </li>
-            <li>
-              <Link to="/distributor/riwayat-pengiriman">
-                <span className="icon">🚚</span>
-                Riwayat Pengiriman
-              </Link>
-            </li>
-            <li>
-              <Link to="/distributor/profile">
-                <span className="icon">👤</span>
-                Profil
-              </Link>
-            </li>
-            <li onClick={handleLogout}>
-              <Link to="/login">
-                <span className="icon">🚪</span>
+              <button className="logout-btn" onClick={handleLogout}>
+                <span className="icon"><FaSignOutAlt /></span>
                 Logout
-              </Link>
+              </button>
             </li>
           </ul>
         </aside>

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import "../App.css";
+import { BsSearch } from "react-icons/bs";
+import "../styles/Belanja.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -14,31 +15,22 @@ const Belanja = () => {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
-  const loadProducts = () => {
+  const loadProducts = useCallback(() => {
     fetch(`${API_URL}/products?search=${search}`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
         setFilteredProducts(data);
-
-        // Ambil semua kategori unik
         const uniqueCategories = [
           ...new Set(data.map((item) => item.category_name || "Lainnya")),
         ];
         setCategories(uniqueCategories);
       });
-  };
+  }, [search]);
 
   useEffect(() => {
     loadProducts();
-  }, []);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      loadProducts();
-    }, 400);
-    return () => clearTimeout(timeout);
-  }, [search]);
+  }, [loadProducts]);
 
   useEffect(() => {
     let sorted = [...products];
@@ -52,82 +44,78 @@ const Belanja = () => {
     }
 
     setFilteredProducts(sorted);
-  }, [filterOption, products]);
-
-  const addToCart = (product_id) => {
-    const userId = localStorage.getItem("user_id");
-    fetch(`${API_URL}/cart`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: userId, product_id, quantity: 1 }),
-    }).then(() => alert("Produk ditambahkan ke keranjang!"));
-  };
+  }, [filterOption, products, categories]);
 
   return (
-    <div className="main-container">
+    <div className="belanja-wrapper">
       <Navbar />
 
-      {/* Search Bar */}
-      <div className="search-container" style={{padding : 20}}>
-        <div className="search-box">
-          <span className="search-icon">🔍</span>
-          <input
-            type="text"
-            placeholder="Masukkan pencarian"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
-
-      {/* Filter Dropdown */}
-      <div style={{ display: "flex", justifyContent: "flex-end", paddingRight:"40px", marginBottom: "20px" }}>
-        <select
-          className="filter-dropdown"
-          value={filterOption}
-          onChange={(e) => setFilterOption(e.target.value)}
-        >
-          <option value="">-- Filter Produk --</option>
-          <option value="murah">Harga Termurah</option>
-          <option value="mahal">Harga Termahal</option>
-          {categories.map((cat, index) => (
-            <option key={index} value={cat}>{cat}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="product-grid">
-        {filteredProducts.map((p) => (
-          <div key={p.id} className="product-card">
-            <img
-              src={p.image_url || "https://via.placeholder.com/200"}
-              alt={p.name}
+      <main className="belanja-container">
+        {/* Search Bar */}
+        <div className="search-container">
+          <div className="search-box">
+            <span className="search-icon">
+              <BsSearch size={24} />
+            </span>
+            <input
+              type="text"
+              placeholder="Masukkan pencarian"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
-            <h3>{p.name}</h3>
-            <div className="rating">
-              {(() => {
-                const rating = parseFloat(p.rating) || 0; // pastikan number
-                return (
-                  <>
-                    {"★".repeat(Math.round(rating))}
-                    {"☆".repeat(5 - Math.round(rating))}
-                    <span style={{ marginLeft: "5px", fontSize: "0.9em", color: "black"}}>
-                      ({rating.toFixed(1)})
-                    </span>
-                  </>
-                );
-              })()}
-            </div>
-            <p className="product-price">Rp{parseInt(p.price).toLocaleString()}</p>
-            <div className="product-buttons">
-              <button onClick={() => addToCart(p.id)} className="btn-primary">
-                Tambah Keranjang
-              </button>
-              <button onClick={() => navigate(`/products/${p.id}`)} className="btn-secondary">Detail</button>
-            </div>
           </div>
-        ))}
-      </div>
+        </div>
+
+        {/* Filter Dropdown */}
+        <div className="filter-belanja-container">
+          <select
+            className="filter-belanja-dropdown"
+            value={filterOption}
+            onChange={(e) => setFilterOption(e.target.value)}
+          >
+            <option value="">-- Filter Produk --</option>
+            <option value="murah">Harga Termurah</option>
+            <option value="mahal">Harga Termahal</option>
+            {categories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Product Grid */}
+        <div className="product-grid-belanja">
+          {filteredProducts.map((p) => (
+            <div
+              key={p.id}
+              className="product-card"
+              onClick={() => navigate(`/products/${p.id}`)}
+            >
+              <img
+                src={p.image_url || "https://via.placeholder.com/200"}
+                alt={p.name}
+              />
+              <div className="rating">
+                {(() => {
+                  const rating = parseFloat(p.rating) || 0;
+                  return (
+                    <>
+                      {"★".repeat(Math.round(rating))}
+                      {"☆".repeat(5 - Math.round(rating))}
+                      <span>({rating.toFixed(1)})</span>
+                    </>
+                  );
+                })()}
+              </div>
+              <h3>{p.name}</h3>
+              <p className="product-price-card-shop">
+                Rp{parseInt(p.price).toLocaleString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
 
       <Footer />
     </div>
@@ -135,3 +123,4 @@ const Belanja = () => {
 };
 
 export default Belanja;
+ 

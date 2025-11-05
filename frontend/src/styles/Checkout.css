@@ -1,51 +1,65 @@
+/* Container utama */
 .main-checkout-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: #f1eaea;
+  font-family: 'Inter', sans-serif;
 }
 
+/* Wrapper konten */
 .checkout-container {
-  max-width: 800px;
-  margin: 40px auto;
-  background: #f9fafb;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  margin-top: 80px;
+  max-width: 720px;
+  margin-bottom: 60px;
+  margin-top: 140px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
   box-sizing: border-box;
 }
 
+/* Judul */
 .checkout-container h2 {
   text-align: center;
-  margin-bottom: 25px;
-  font-size: 24px;
-  color: #222;
+  margin-bottom: 28px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #1f2937;
 }
 
+/* Error */
 .error-text {
-  color: red;
+  color: #ef4444;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
 }
 
+/* Card */
 .checkout-card {
-  background: #fff;
-  border-radius: 10px;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 
 .checkout-card h3 {
   font-size: 18px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  color: #1f2937;
 }
 
 .checkout-card p {
-  font-size: 16px;
-  margin: 5px 0;
+  font-size: 15px;
+  margin: 6px 0;
+  color: #374151;
 }
 
+/* List barang */
 .checkout-list {
   list-style: none;
   padding: 0;
@@ -55,52 +69,69 @@
 .checkout-list li {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  align-items: center;
+  padding: 10px 0;
   border-bottom: 1px solid #e5e7eb;
-  font-size: 16px;
+  font-size: 15px;
+  color: #374151;
 }
 
 .checkout-list li:last-child {
   border-bottom: none;
 }
 
+.checkout-list span {
+  flex: 1;
+}
+
+.checkout-list strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Total */
 .checkout-total {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .checkout-total h3 {
   font-size: 20px;
-  color: #111;
+  color: #111827;
 }
 
 .checkout-total span {
-  color: #eab308;
+  color: #10b981;
   font-weight: bold;
 }
 
+/* Tombol konfirmasi */
 .btn-primary-checkout {
   display: block;
   width: 100%;
-  background: #facc15;
+  background: #b89100;
+  color: white;
   border: none;
-  padding: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  border-radius: 8px;
+  padding: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.2s ease;
 }
 
 .btn-primary-checkout:hover {
-  background: #eab308;
+  background: #b89100;
 }
 
-/* ✅ Responsiveness */
+/* Responsif */
 @media screen and (max-width: 600px) {
   .checkout-container {
-    padding: 15px;
-    margin: 20px 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .checkout-card h3,
@@ -114,7 +145,7 @@
   }
 
   .btn-primary-checkout {
-    font-size: 16px;
+    font-size: 15px;
     padding: 12px;
   }
 }

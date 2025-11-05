@@ -1,97 +1,136 @@
 .transaksi-container {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   min-height: 100vh;
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 20px;
+  max-width: 950px;
+  margin: 100px auto 60px;
+  padding: 0 20px;
+  font-family: "Poppins", sans-serif;
+  background-color: #ffffff;
 }
 
+/* === Tabs === */
 .transaksi-tabs {
-  margin-top: 30px;
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
+  justify-content: center;
+  gap: 35px;
+  border-bottom: 2px solid #f1f1f1;
+  margin-bottom: 25px;
 }
 
 .transaksi-tabs button {
   background: none;
   border: none;
-  padding: 10px;
-  font-weight: bold;
+  padding: 12px 10px;
+  font-weight: 600;
+  font-size: 15px;
   color: #555;
   cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.transaksi-tabs button:hover {
+  color: #dca800;
 }
 
 .transaksi-tabs button.active {
-  color: #facc15;
-  border-bottom: 2px solid #facc15;
+  color: #dca800;
 }
 
+.transaksi-tabs button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #dca800;
+  border-radius: 2px;
+}
+
+/* === List Pesanan === */
 .transaksi-list .empty {
   text-align: center;
   color: #777;
-  margin-top: 30px;
+  margin-top: 40px;
+  font-size: 15px;
 }
 
+/* === Kartu Transaksi === */
 .transaksi-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-  padding: 15px;
-  margin-bottom: 20px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  padding: 18px 22px;
+  margin-bottom: 25px;
+  transition: all 0.3s ease;
 }
 
+.transaksi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* === Header === */
 .transaksi-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .transaksi-header .toko {
-  font-weight: bold;
+  font-weight: 600;
   color: #333;
+  font-size: 15px;
 }
 
 .status {
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
   text-transform: capitalize;
+  font-size: 13px;
 }
 
-.status.pending {
-  background: #fef3c7;
-  color: #d97706;
+.status.dipesan {
+  background: #fff3cd;
+  color: #856404;
 }
 
 .status.diproses {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #cce5ff;
+  color: #004085;
 }
 
 .status.dikirim {
-  background: #ecfdf5;
+  background: #d1fae5;
   color: #047857;
 }
 
 .status.completed {
-  background: #f0fdf4;
+  background: #dcfce7;
   color: #15803d;
 }
 
+/* === Produk === */
 .produk {
   display: flex;
-  gap: 15px;
   align-items: center;
-  margin-bottom: 10px;
+  gap: 15px;
+  border-top: 1px solid #f3f3f3;
+  border-bottom: 1px solid #f3f3f3;
+  padding: 12px 0;
 }
 
 .produk img {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
+  width: 85px;
+  height: 85px;
+  border-radius: 10px;
   object-fit: cover;
+  background-color: #fffaf0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .info {
@@ -100,69 +139,92 @@
 
 .info .nama {
   font-weight: 500;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  color: #333;
 }
 
 .info .qty,
 .info .harga {
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
 
+/* === Footer === */
 .transaksi-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .total {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
 }
 
+/* === Rating === */
 .rating {
   color: #facc15;
   font-size: 18px;
 }
 
+.rating-input span {
+  font-size: 20px;
+  color: #ddd;
+  transition: color 0.2s;
+}
+
+.rating-input span:hover {
+  color: #facc15;
+}
+
+/* === Tombol Detail === */
+.transaksi-footer button {
+  background-color: #1d4ed8;
+  color: #f1eaea;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.transaksi-footer button:hover {
+  background-color: #153ea8;
+  transform: scale(1.05);
+}
+
+/* === Responsif === */
 @media (max-width: 768px) {
-  .transaksi-card {
-    padding: 8px 10px;
+  .transaksi-container {
+    padding: 0 10px;
   }
 
-  .transaksi-header {
-    font-size: 12px;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .produk {
-    flex-direction: row;
-    gap: 8px;
+  .transaksi-tabs {
+    gap: 18px;
   }
 
   .produk img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
   }
 
   .info .nama {
     font-size: 13px;
   }
 
-  .info .qty,
-  .info .harga {
-    font-size: 11px;
-  }
-
   .transaksi-footer {
     flex-direction: column;
     align-items: flex-start;
-    font-size: 12px;
-    gap: 4px;
+    gap: 5px;
   }
 
-  .rating {
-    font-size: 14px;
+  .transaksi-footer button {
+    align-self: flex-end;
   }
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/Transaksi.css";
@@ -80,9 +81,7 @@ const Transaksi = () => {
                 </div>
 
                 <div className="transaksi-footer">
-                  <p className="total">
-                    Total: <strong>Rp{parseInt(p.total_price).toLocaleString()}</strong>
-                  </p>
+                  <p className="total">Total: <strong>Rp{parseInt(p.total_price).toLocaleString()}</strong></p>
 
                   {/* Rating */}
                   {p.status === "Completed" ? (
@@ -104,6 +103,10 @@ const Transaksi = () => {
                       </div>
                     )
                   ) : null}
+
+                  <div style={{ marginTop: 8 }}>
+                    <Link to={`/transaction/${p.transaction_id}`}><button>Detail</button></Link>
+                  </div>
                 </div>
               </div>
             ))

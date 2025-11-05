@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DistributorSidebar from "../../components/Distributor/DistributorSidebar";
-import "../../styles/Distributor/ProfileDistributor.css";
+import "../../styles/Distributor/DistributorProfile.css";
 
 const API_URL = "http://localhost/Online_Shop";
 
@@ -111,8 +111,8 @@ const DistributorProfile = () => {
   return (
     <DistributorSidebar>
       <div className="distributor-profile-container">
-        {/* Foto Profile */}
-        <div className="profile-photo-section">
+        <div className="profile-card">
+          {/* Foto Profile */}
           <img
             src={
               user.profile_picture
@@ -123,6 +123,7 @@ const DistributorProfile = () => {
             className="profile-photo"
             onClick={() => setShowFullImage(true)}
           />
+
           <div className="photo-actions">
             <label className="upload-image">
               Ubah Foto Profile
@@ -139,22 +140,33 @@ const DistributorProfile = () => {
               </button>
             )}
           </div>
-        </div>
 
-        {/* Data Diri */}
-        <div className="profile-info">
-          <p>
-            <strong>Nama:</strong> {user.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-          <p>
-            <strong>No HP:</strong> {user.phone}
-          </p>
-          <button className="btn-edit-profile" onClick={() => setShowEditModal(true)}>
-            Edit Profile
-          </button>
+          {/* Data Diri dengan input disabled */}
+          <div className="profile-form">
+            <label>Nama</label>
+            <input type="text" value={user.name} disabled />
+
+            <label>Email</label>
+            <input type="email" value={user.email} disabled />
+
+            <label>No HP</label>
+            <input type="text" value={user.phone} disabled />
+
+            {/* Kalau ada alamat */}
+            {user.address && (
+              <>
+                <label>Alamat</label>
+                <textarea value={user.address} disabled />
+              </>
+            )}
+
+            <button
+              className="btn-edit-profile"
+              onClick={() => setShowEditModal(true)}
+            >
+              Edit Profile
+            </button>
+          </div>
         </div>
       </div>
 
@@ -183,8 +195,8 @@ const DistributorProfile = () => {
 
       {/* Modal Edit Profile */}
       {showEditModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modal-distributor">
+          <div className="modal-content-distributor">
             <h2>Edit Profile</h2>
             <input
               type="text"

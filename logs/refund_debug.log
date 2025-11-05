@@ -1,0 +1,7 @@
+[2025-10-20 08:43:35] Memproses APPROVE refund ID 10 untuk transaksi 21.
+[2025-10-20 08:43:35] ❌ ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'db_online_shop.transaction_items' doesn't exist
+[2025-10-20 08:58:22] Memproses APPROVE refund ID 11 untuk transaksi 22.
+[2025-10-20 08:58:22] ❌ ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'stock' in 'field list'
+[2025-10-20 09:11:24] Memproses APPROVE refund ID 12 untuk transaksi 23.
+[2025-10-20 09:11:24] ✅ Ditemukan distributor_id = 9 untuk transaksi 23.
+[2025-10-20 09:11:24] ✅ Refund ID 12 berhasil diteruskan ke distributor_refunds.

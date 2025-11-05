@@ -1,0 +1,207 @@
+/* === Layout utama === */
+.detail-refund-container {
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+  background: #f9fafc;
+  color: #1f2937;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* <-- ini penting biar konten di tengah */
+}
+
+/* === Header tetap full lebar === */
+.detail-refund-header {
+  width: 100%;
+  max-width: 900px; /* biar sejajar sama card */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon-title {
+  background: #e0ecff;
+  color: #3b82f6;
+  padding: 0.8rem;
+  border-radius: 12px;
+  font-size: 1.8rem;
+}
+
+.detail-refund-header h2 {
+  font-size: 1.6rem;
+  margin: 0;
+}
+
+.detail-refund-header p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Tombol kembali agar ikut center layout */
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #3b82f6;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-back:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.detail-refund-grid {
+  width: 100%;
+  max-width: 900px; /* batasi lebar biar gak kepinggir kanan */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+
+/* === Setiap card tetap tampil rapi === */
+.detail-refund-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.detail-refund-card h3 {
+  font-size: 1.1rem;
+  color: #111827;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.icon-inline {
+  color: #3b82f6;
+}
+
+.detail-list p {
+  margin: 0.4rem 0;
+}
+
+/* Status dropdown */
+.status-dropdown {
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  font-weight: 500;
+}
+.status-pending {
+  background: #fef9c3;
+  color: #854d0e;
+}
+.status-approved {
+  background: #dcfce7;
+  color: #166534;
+}
+.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Bukti gambar */
+.bukti-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.bukti-container img {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 2px solid #e5e7eb;
+}
+.bukti-container img:hover {
+  transform: scale(1.05);
+}
+
+/* Preview overlay */
+.image-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.image-preview-content {
+  position: relative;
+}
+
+.image-preview-content img {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+.close-preview {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+}
+.nav-btn.prev {
+  left: -50px;
+}
+.nav-btn.next {
+  right: -50px;
+}
+
+/* === Responsif tetap oke === */
+@media (max-width: 768px) {
+  .detail-refund-container {
+    padding: 1rem;
+  }
+
+  .detail-refund-header,
+  .detail-refund-grid {
+    max-width: 100%;
+  }
+}

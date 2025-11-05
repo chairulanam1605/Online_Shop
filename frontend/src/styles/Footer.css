@@ -1,41 +1,57 @@
 .footer {
-  background-color: #c89f00;
-  color:#222;
-  padding: 30px 20px;
+  background-color: #b89100; /* Warna emas lebih lembut dan elegan */
+  color: #fff;
+  padding: 40px 20px;
   text-align: center;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+.footer-container {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .footer-title {
-  font-size: 24px;
-  font-weight: bold;
-  font-family: 'Georgia', serif;
-  margin-bottom: 10px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
 }
 
 .footer-address {
-  font-size: 14px;
-  font-weight: bold;
-  color: #222;
+  font-size: 0.95rem;
+  color: #f4f4f4;
   line-height: 1.6;
-  font-weight: 500;
+  margin: 0 auto 15px auto;
+  max-width: 600px;
 }
 
 .footer-copy {
+  font-size: 0.85rem;
+  color: #eaeaea;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
   margin-top: 20px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #222;
+  padding-top: 10px;
+  letter-spacing: 0.3px;
 }
 
 @media (max-width: 768px) {
-  .footer-title {
-    font-size: 18px;
+  .footer {
+    padding: 30px 15px;
   }
 
-  .footer-address,
+  .footer-title {
+    font-size: 1.3rem;
+  }
+
+  .footer-address {
+    font-size: 0.85rem;
+  }
+
   .footer-copy {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 }

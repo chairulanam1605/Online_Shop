@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Auth/AuthForm.css";
-
+import loginBg from "../../assets/bg_auth.jpg";
 
 const API_URL = "http://localhost/Online_Shop";
 
@@ -12,51 +12,53 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setError("");
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, password })
+      });
 
-  try {
-    const response = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ name, password }),
-    });
+      if (!response.ok) {
+        const text = await response.text();
+        console.error("Gagal login, respons dari server:", text);
+        setError("Respons server tidak valid");
+        return;
+      }
 
-    if (!response.ok) {
-      const text = await response.text();
-      console.error("Gagal login, respons dari server:", text);
-      setError("Respons server tidak valid");
-      return;
+      const result = await response.json();
+
+      if (result.status === "success") {
+        localStorage.setItem("user_id", result.user_id);
+        localStorage.setItem("user_name", result.name);
+        localStorage.setItem("user_role", result.role);
+        if (result.role === "admin") {
+          navigate("/admin");
+        } else if (result.role === "distributor") {
+          navigate("/distributor/dashboard");
+        } else {
+          navigate("/");
+        }
+      } else {
+        setError(result.message || "Login gagal");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Terjadi kesalahan saat login");
     }
-
-
-    const result = await response.json();
-
-    if (result.status === "success") {
-    localStorage.setItem("user_id", result.user_id);
-    localStorage.setItem("user_name", result.name);
-    localStorage.setItem("user_role", result.role);
-
-  if (result.role === "admin") {
-    navigate("/admin");
-  } else if (result.role === "distributor") {
-    navigate("/distributor/dashboard");
-  } else {
-    navigate("/"); // pelanggan biasa
-  }
-} else {
-  setError(result.message || "Login gagal");
-}
-  } catch (err) {
-    setError("Terjadi kesalahan saat login");
-  }
-};
-
+  };
 
   return (
-    <div className="auth-container">
+    <div
+      className="auth-container overlay-strong"
+      style={{ backgroundImage: `url(${loginBg})` }}
+    >
       <div className="auth-card">
         <h2>Login</h2>
+        <p className="auth-sub">Masuk menggunakan username dan password Anda</p>
         {error && <p className="auth-error">{error}</p>}
         <form onSubmit={handleLogin}>
           <input
@@ -75,10 +77,15 @@ const Login = () => {
             required
             className="auth-input"
           />
+          <div className="auth-row">
+            <div style={{ flex: 1 }} />
+            <div style={{ textAlign: "right" }}>
+              <a href="/forgot-password" className="auth-link">Lupa password?</a>
+            </div>
+          </div>
           <button type="submit" className="auth-button">Login</button>
         </form>
         <p className="auth-link">Belum punya akun? <a href="/register">Daftar</a></p>
-        <p className="auth-link"><a href="/forgot-password">Lupa password?</a></p>
       </div>
     </div>
   );

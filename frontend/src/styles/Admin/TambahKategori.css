@@ -1,55 +1,77 @@
-/* src/styles/Admin/TambahKategori.css */
-
 .tambah-kategori {
-    max-width: 500px;
-    margin: 30px auto;
-    padding: 30px 35px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  color: #111827;
+  font-family: "Inter", sans-serif;
 }
 
 .tambah-kategori h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 24px;
-    color: #333;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
 }
 
+/* Form container */
 .tambah-kategori form {
-    display: flex;
-    flex-direction: column;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
+/* Label */
 .tambah-kategori label {
-    font-size: 15px;
-    margin-bottom: 8px;
-    color: #555;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 4px;
 }
 
-.tambah-kategori input[type="text"] {
-    padding: 12px 16px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
+/* Input */
+.tambah-kategori input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
 }
 
-.tambah-kategori input[type="text"]::placeholder {
-    color: #aaa;
+.tambah-kategori input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
+/* Tombol simpan */
 .tambah-kategori button {
-    padding: 12px;
-    font-size: 15px;
-    background-color: green;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
 }
 
 .tambah-kategori button:hover {
-    background-color: green;
+  background-color: #1d4ed8;
+}
+
+/* Responsif */
+@media (max-width: 600px) {
+  .tambah-kategori form {
+    width: 100%;
+    padding: 20px;
+  }
 }

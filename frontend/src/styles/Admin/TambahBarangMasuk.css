@@ -1,39 +1,114 @@
-.row-item {
+.tambah-barang-masuk {
+  padding: 32px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  color: #111827;
+  font-family: "Inter", sans-serif;
+}
+
+.tambah-barang-masuk h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.tambah-barang-masuk form {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Row item */
+.row-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr auto;
+  gap: 12px;
+  align-items: center;
 }
 
 .row-item select,
 .row-item input {
-  padding: 8px;
-  flex: 1;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
+.row-item select:focus,
+.row-item input:focus {
+  border-color: #3b82f6;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Button hapus */
 .remove-btn {
-  background: #e74c3c;
-  color: white;
+  background-color: #fee2e2;
   border: none;
-  padding: 8px 10px;
+  color: #b91c1c;
+  font-size: 1.1rem;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 10px;
+  padding: 6px 10px;
+  transition: background 0.2s;
+}
+.remove-btn:hover {
+  background-color: #fecaca;
 }
 
+/* Tambah produk */
 .add-row-btn {
-  background: #3498db;
-  color: white;
+  background-color: #e0f2fe;
+  color: #0369a1;
   border: none;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 10px;
   cursor: pointer;
+  width: fit-content;
+  transition: all 0.2s;
+}
+.add-row-btn:hover {
+  background-color: #bae6fd;
 }
 
+/* Tombol simpan */
 .submit-btn {
-  background: #2ecc71;
+  background-color: #2563eb;
   color: white;
-  padding: 10px;
+  font-weight: 600;
+  padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
+  align-self: flex-end;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+.submit-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .row-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
 }

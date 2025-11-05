@@ -7,18 +7,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-// CORS untuk React
 header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Content-Type: application/json");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, x-user-id, Origin, Accept");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
 
 // Koneksi Database
 $host = 'localhost';
@@ -32,6 +30,24 @@ try {
 } catch (PDOException $e) {
     die(json_encode(['error' => $e->getMessage()]));
 }
+
+function get_request_user_id($flight) {
+    // Prioritaskan session
+    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    if (!empty($_SESSION['user_id'])) return (int)$_SESSION['user_id'];
+
+    // Cek header X-User-Id (jika dikirim dari frontend)
+    $h = $flight->request()->headers;
+    if (!empty($h['X-User-Id'])) return (int)$h['X-User-Id'];
+
+    // Cek data body JSON atau form
+    $data = $flight->request()->data->getData();
+    if (!empty($data['user_id'])) return (int)$data['user_id'];
+
+    // fallback null jika tidak ditemukan
+    return null;
+}
+
 
 // --- 1. GET /products?search=&category=&minPrice=&maxPrice=
 $flight->route('GET /products', function () use ($pdo) {
@@ -461,6 +477,384 @@ $flight->route('POST /beri-rating', function() use ($pdo, $flight) {
 
     $flight->json(["status" => "success", "message" => "Rating berhasil disimpan", "avg_rating" => $avg_rating]);
 });
+
+// DETAIL TRANSAKSI (untuk pembeli) - GET /transaction/@id
+$flight->route('GET /transaction/@id', function($id) use ($pdo, $flight) {
+    try {
+        // header transaksi + buyer
+        $stmt = $pdo->prepare("
+            SELECT t.id, t.user_id, t.name AS buyer_name, t.address AS buyer_address,
+                   t.payment_method, t.total_price, t.created_at, t.status
+            FROM transactions t
+            WHERE t.id = ?
+            LIMIT 1
+        ");
+        $stmt->execute([$id]);
+        $header = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$header) {
+            return $flight->json(['error' => 'Transaksi tidak ditemukan'], 404);
+        }
+
+        // items
+        $stmt2 = $pdo->prepare("
+            SELECT ti.product_id, p.name AS product_name, p.image_url, ti.quantity, ti.price, ti.rating
+            FROM transaction_item ti
+            JOIN products p ON ti.product_id = p.id
+            WHERE ti.transaction_id = ?
+        ");
+        $stmt2->execute([$id]);
+        $items = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+        // shipping/distributor info (cek tabel distributor_orders)
+        $stmt3 = $pdo->prepare("
+            SELECT do.distributor_id, u.name AS distributor_name, do.tracking_number, do.status AS distributor_status, do.assigned_at, do.completed_at
+            FROM distributor_orders do
+            LEFT JOIN users u ON do.distributor_id = u.id
+            WHERE do.transaction_id = ? LIMIT 1
+        ");
+        $stmt3->execute([$id]);
+        $shipping = $stmt3->fetch(PDO::FETCH_ASSOC);
+
+        // refund info (jika ada)
+        $stmt4 = $pdo->prepare("SELECT * FROM refunds WHERE transaction_id = ? ORDER BY created_at DESC");
+        $stmt4->execute([$id]);
+        $refunds = $stmt4->fetchAll(PDO::FETCH_ASSOC);
+
+        $flight->json([
+            'header' => $header,
+            'items' => $items,
+            'shipping' => $shipping,
+            'refunds' => $refunds
+        ]);
+    } catch (Exception $e) {
+        $flight->json(['error' => 'Server error: ' . $e->getMessage()], 500);
+    }
+});
+
+/**
+ * 1️⃣ Ajukan Refund (Pembeli)
+ * URL: POST /refunds
+ */
+$flight->route('POST /refunds', function() use ($pdo, $flight) {
+    $user_id = $_POST['user_id'] ?? null;
+    $transaction_id = $_POST['transaction_id'] ?? null;
+    $reason = $_POST['reason'] ?? '';
+    $description = $_POST['description'] ?? '';
+
+    if (!$user_id || !$transaction_id || !$reason) {
+        return $flight->json(['error' => 'Data tidak lengkap'], 400);
+    }
+
+    // Validasi transaksi milik user
+    $stmt = $pdo->prepare("SELECT * FROM transactions WHERE id = ? AND user_id = ?");
+    $stmt->execute([$transaction_id, $user_id]);
+    $trx = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$trx) {
+        return $flight->json(['error' => 'Transaksi tidak ditemukan atau bukan milik Anda'], 404);
+    }
+
+    // Cegah refund ganda
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM refunds WHERE transaction_id = ?");
+    $stmt->execute([$transaction_id]);
+    if ($stmt->fetchColumn() > 0) {
+        return $flight->json(['error' => 'Refund sudah pernah diajukan untuk transaksi ini'], 400);
+    }
+
+    // Upload file bukti
+    $proof_files = [];
+    $uploadDir = __DIR__ . "/uploads/refunds/";
+    if (!file_exists($uploadDir)) mkdir($uploadDir, 0777, true);
+
+    if (!empty($_FILES['media']['name'][0])) {
+        foreach ($_FILES['media']['tmp_name'] as $i => $tmpName) {
+            $filename = time() . "_" . basename($_FILES['media']['name'][$i]);
+            move_uploaded_file($tmpName, $uploadDir . $filename);
+            $proof_files[] = $filename;
+        }
+    }
+
+    // ✅ Ambil otomatis nama distributor dari distributor_orders
+    $stmt = $pdo->prepare("
+        SELECT u.name AS distributor_name
+        FROM distributor_orders do
+        LEFT JOIN users u ON do.distributor_id = u.id
+        WHERE do.transaction_id = ?
+        LIMIT 1
+    ");
+    $stmt->execute([$transaction_id]);
+    $distributor = $stmt->fetch(PDO::FETCH_ASSOC);
+    $distributor_name = $distributor['distributor_name'] ?? null;
+
+    // Simpan refund baru
+    $stmt = $pdo->prepare("
+        INSERT INTO refunds (transaction_id, user_id, distributor_name, reason, description, proof_files, status, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, 'pending', NOW())
+    ");
+    $stmt->execute([
+        $transaction_id,
+        $user_id,
+        $distributor_name,
+        $reason,
+        $description,
+        json_encode($proof_files)
+    ]);
+
+    // Update status transaksi
+    $stmt = $pdo->prepare("UPDATE transactions SET status = 'Refund Pending' WHERE id = ?");
+    $stmt->execute([$transaction_id]);
+
+    return $flight->json(['success' => true, 'message' => 'Refund berhasil diajukan dan menunggu persetujuan admin']);
+});
+
+
+
+
+// -------------------------
+// GET refunds by user - GET /refunds/user/@user_id
+$flight->route('GET /refunds/user/@user_id', function($user_id) use ($pdo, $flight) {
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM refunds WHERE user_id = ? ORDER BY created_at DESC");
+        $stmt->execute([$user_id]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as &$r) {
+            $r['proof_files'] = json_decode($r['proof_files'], true);
+        }
+        $flight->json($rows);
+    } catch (Exception $e) {
+        $flight->json(['error' => 'Server error: ' . $e->getMessage()], 500);
+    }
+});
+
+/**
+ * 2️⃣ Daftar Refund (Admin)
+ * URL: GET /admin/refunds
+ */
+// === GET semua data refund (untuk halaman admin) ===
+$flight->route('GET /admin/refunds', function() use ($pdo) {
+    try {
+        $query = "
+            SELECT 
+                r.id,
+                r.transaction_id,
+                r.user_id,
+                u.name AS username,
+                r.reason,
+                r.description,
+                r.status,
+                r.created_at,
+                r.updated_at,
+                r.distributor_name,
+                t.total_price
+            FROM refunds r
+            LEFT JOIN users u ON r.user_id = u.id
+            LEFT JOIN transactions t ON r.transaction_id = t.id
+            ORDER BY r.created_at DESC
+        ";
+
+        $stmt = $pdo->prepare($query);
+        $stmt->execute();
+        $refunds = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($refunds as &$refund) {
+            $refund['proof_files'] = json_decode($refund['proof_files'] ?? '[]', true);
+        }
+
+        if (!is_array($refunds)) $refunds = [];
+        echo json_encode($refunds);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            "error" => "Gagal mengambil data refund",
+            "message" => $e->getMessage()
+        ]);
+    }
+});
+
+$flight->route('GET /admin/refunds/@id', function($id) use ($pdo, $flight) {
+    $stmt = $pdo->prepare("
+        SELECT 
+            r.id,
+            r.transaction_id,
+            r.user_id,
+            u.name AS username,
+            r.reason,
+            r.description,
+            r.status,
+            r.created_at,
+            r.updated_at,
+            r.distributor_name,
+            r.proof_files,
+            t.total_price
+        FROM refunds r
+        LEFT JOIN users u ON r.user_id = u.id
+        LEFT JOIN transactions t ON r.transaction_id = t.id
+        WHERE r.id = ?
+    ");
+    $stmt->execute([$id]);
+    $refund = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$refund) {
+        return $flight->json(["error" => "Refund tidak ditemukan"], 404);
+    }
+
+    $refund['proof_files'] = json_decode($refund['proof_files'] ?? '[]', true);
+    return $flight->json($refund);
+});
+
+
+// -------------------------
+// -------------------------
+// ADMIN: process refund (approve/reject) - POST /admin/refunds/@id/process
+$flight->route('POST /admin/refunds/@id/process', function($id) use ($pdo, $flight) {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $action = $data['action'] ?? '';
+
+    // 🔹 Setup path untuk log file
+    $logDir = __DIR__ . "/logs";
+    if (!file_exists($logDir)) mkdir($logDir, 0777, true);
+    $logFile = $logDir . "/refund_debug.log";
+
+    // Fungsi untuk tulis log
+    $log = function($msg) use ($logFile) {
+        file_put_contents($logFile, "[" . date("Y-m-d H:i:s") . "] " . $msg . "\n", FILE_APPEND);
+    };
+
+    try {
+        // Ambil data refund
+        $stmt = $pdo->prepare("SELECT * FROM refunds WHERE id = ?");
+        $stmt->execute([$id]);
+        $refund = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$refund) {
+            $log("Refund ID $id tidak ditemukan.");
+            return $flight->json(['error' => 'Refund tidak ditemukan'], 404);
+        }
+
+        // Ambil data transaksi
+        $trxStmt = $pdo->prepare("SELECT * FROM transactions WHERE id = ?");
+        $trxStmt->execute([$refund['transaction_id']]);
+        $trx = $trxStmt->fetch(PDO::FETCH_ASSOC);
+        if (!$trx) {
+            $log("Transaksi {$refund['transaction_id']} tidak ditemukan untuk refund ID $id.");
+            return $flight->json(['error' => 'Transaksi terkait tidak ditemukan'], 404);
+        }
+
+        // ======= APPROVE =======
+        if ($action === 'approve' || $action === 'approved') {
+            $log("Memproses APPROVE refund ID $id untuk transaksi {$refund['transaction_id']}.");
+
+            // Ubah status refund & transaksi
+            $pdo->prepare("UPDATE refunds SET status = 'approved', updated_at = NOW() WHERE id = ?")
+                ->execute([$id]);
+            $pdo->prepare("UPDATE transactions SET status = 'Refund Approved' WHERE id = ?")
+                ->execute([$refund['transaction_id']]);
+
+            // Kembalikan stok produk yang direfund
+            $stmtItems = $pdo->prepare("SELECT * FROM transaction_item WHERE transaction_id = ?");
+            $stmtItems->execute([$refund['transaction_id']]);
+            foreach ($stmtItems->fetchAll(PDO::FETCH_ASSOC) as $item) {
+                $pdo->prepare("UPDATE products SET unit_label = unit_label + ? WHERE id = ?")
+                    ->execute([$item['quantity'], $item['product_id']]);
+            }
+
+            // 🔹 Ambil distributor_id dari distributor_orders
+            $stmtDist = $pdo->prepare("
+                SELECT distributor_id 
+                FROM distributor_orders 
+                WHERE transaction_id = ? 
+                LIMIT 1
+            ");
+            $stmtDist->execute([$refund['transaction_id']]);
+            $distributor = $stmtDist->fetch(PDO::FETCH_ASSOC);
+            $distributor_id = $distributor['distributor_id'] ?? null;
+
+            if (!$distributor_id) {
+                $log("⚠️ Tidak ditemukan distributor_id untuk transaksi {$refund['transaction_id']}.");
+            } else {
+                $log("✅ Ditemukan distributor_id = $distributor_id untuk transaksi {$refund['transaction_id']}.");
+            }
+
+            // 🔹 Ambil data pembeli
+            $stmtBuyer = $pdo->prepare("SELECT name FROM users WHERE id = ?");
+            $stmtBuyer->execute([$trx['user_id']]);
+            $buyer = $stmtBuyer->fetch(PDO::FETCH_ASSOC);
+
+            // 🔹 Ambil nama produk pertama dari transaksi
+            $stmtProd = $pdo->prepare("
+                SELECT p.name AS product_name
+                FROM transaction_item ti
+                JOIN products p ON ti.product_id = p.id
+                WHERE ti.transaction_id = ?
+                LIMIT 1
+            ");
+            $stmtProd->execute([$refund['transaction_id']]);
+            $product = $stmtProd->fetch(PDO::FETCH_ASSOC);
+
+            // 🔹 Simpan data refund ke distributor_refunds
+            $stmtInsert = $pdo->prepare("
+                INSERT INTO distributor_refunds 
+                    (refund_id, distributor_id, transaction_id, name, product_name, reason, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, NOW())
+            ");
+            $stmtInsert->execute([
+                $refund['id'],
+                $distributor_id,
+                $refund['transaction_id'],
+                $buyer['name'] ?? 'Tidak diketahui',
+                $product['product_name'] ?? 'Tidak diketahui',
+                $refund['reason'] ?? ''
+            ]);
+
+            $log("✅ Refund ID $id berhasil diteruskan ke distributor_refunds.");
+            return $flight->json(['success' => true, 'message' => 'Refund disetujui dan diteruskan ke distributor.']);
+        }
+
+        // ======= REJECT =======
+        if ($action === 'reject' || $action === 'rejected') {
+            $pdo->prepare("UPDATE refunds SET status = 'rejected', updated_at = NOW() WHERE id = ?")
+                ->execute([$id]);
+            $pdo->prepare("UPDATE transactions SET status = 'Refund Rejected' WHERE id = ?")
+                ->execute([$refund['transaction_id']]);
+            $log("Refund ID $id ditolak oleh admin.");
+            return $flight->json(['success' => true, 'message' => 'Refund ditolak.']);
+        }
+
+        // ======= INVALID ACTION =======
+        $log("Aksi tidak valid dikirim untuk refund ID $id: '$action'");
+        return $flight->json(['error' => 'Aksi tidak valid.'], 400);
+
+    } catch (Exception $e) {
+        $log("❌ ERROR: " . $e->getMessage());
+        return $flight->json(['error' => 'Server error', 'message' => $e->getMessage()], 500);
+    }
+});
+
+
+
+$flight->route('GET /distributor/refunds/@id', function($id) use ($pdo, $flight) {
+    $stmt = $pdo->prepare("
+        SELECT 
+            dr.id,
+            dr.refund_id,
+            dr.transaction_id,
+            dr.name AS buyer_name,
+            dr.product_name,
+            dr.reason,
+            t.total_price,
+            u.name AS user_name,
+            u.address AS user_address,
+            dr.created_at
+        FROM distributor_refunds dr
+        JOIN transactions t ON dr.transaction_id = t.id
+        JOIN users u ON t.user_id = u.id
+        WHERE dr.distributor_id = ?
+        ORDER BY dr.created_at DESC
+    ");
+    $stmt->execute([$id]);
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $flight->json($data);
+});
+
+
 
 
 
@@ -1305,6 +1699,17 @@ $flight->route('POST /distributor/orders/complete', function() use ($pdo, $fligh
             WHERE id = ?
         ");
         $stmt->execute([$filename, $distributor_order_id]);
+        $stmtTrx = $pdo->prepare("
+            UPDATE transactions 
+            SET status = 'Completed', delivered_at = NOW() 
+            WHERE id = (
+                SELECT transaction_id 
+                FROM distributor_orders 
+                WHERE id = ?
+                LIMIT 1
+            )
+        ");
+        $stmtTrx->execute([$distributor_order_id]);
 
         $flight->json(['success' => true, 'message' => 'Pesanan selesai dengan bukti foto']);
     } catch (Exception $e) {

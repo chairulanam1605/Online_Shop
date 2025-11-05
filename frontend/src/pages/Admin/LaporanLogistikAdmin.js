@@ -52,7 +52,7 @@ const LaporanLogistikAdmin = () => {
   return (
     <Sidebard>
       <div className="laporan-container">
-        <h1>Laporan Logistik</h1>
+        <h1>Laporan Logistik Harian</h1>
 
         {/* Filter */}
         <div className="filter-container">

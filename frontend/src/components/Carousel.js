@@ -1,5 +1,5 @@
 // components/Carousel.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../styles/Carousel.css";
 
 const images = [
@@ -8,29 +8,86 @@ const images = [
   "https://i.pinimg.com/736x/17/3c/4d/173c4d4e4caf4cffb5ae553afd4150f4.jpg"
 ];
 
-const Carousel = () => {
+const Carousel = ({ fullWidth = false }) => {
   const [index, setIndex] = useState(0);
+  const intervalRef = useRef(null);
+  const wrapperRef = useRef(null);
 
-  const nextSlide = () => {
-    setIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const prevSlide = () => {
+  const nextSlide = () => setIndex((prev) => (prev + 1) % images.length);
+  const prevSlide = () =>
     setIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 3000); // otomatis ganti setiap 3 detik
-    return () => clearInterval(interval);
+    startAuto();
+    return () => stopAuto();
   }, []);
 
+  const startAuto = () => {
+    stopAuto();
+    intervalRef.current = setInterval(nextSlide, 4000);
+  };
+
+  const stopAuto = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
   return (
-    <div className="carousel-container">
-      <img src={images[index]} alt={`Slide ${index}`} />
-      <button className="carousel-btn prev" onClick={prevSlide}>❮</button>
-      <button className="carousel-btn next" onClick={nextSlide}>❯</button>
+    <div
+      className={`carousel-container ${fullWidth ? "full-width" : ""}`}
+      onMouseEnter={stopAuto}
+      onMouseLeave={startAuto}
+      ref={wrapperRef}
+    >
+      <div className="carousel-image-wrapper" aria-live="polite">
+        {images.map((img, i) => (
+          <img
+            key={i}
+            src={img}
+            alt={`Slide ${i + 1}`}
+            className={`carousel-image ${i === index ? "active" : ""}`}
+            loading="lazy"
+            draggable="false"
+          />
+        ))}
+      </div>
+
+      <button
+        className="carousel-btn prev"
+        onClick={() => {
+          prevSlide();
+          startAuto();
+        }}
+        aria-label="Previous slide"
+      >
+        ❮
+      </button>
+      <button
+        className="carousel-btn next"
+        onClick={() => {
+          nextSlide();
+          startAuto();
+        }}
+        aria-label="Next slide"
+      >
+        ❯
+      </button>
+
+      <div className="carousel-indicators">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            className={`indicator ${i === index ? "active" : ""}`}
+            onClick={() => {
+              setIndex(i);
+              startAuto();
+            }}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 };

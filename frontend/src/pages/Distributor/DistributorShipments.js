@@ -1,7 +1,7 @@
 // src/pages/distributor/DistributorShipments.js
 import React, { useEffect, useState } from "react";
 import DistributorSidebar from "../../components/Distributor/DistributorSidebar";
-import "../../styles/Distributor/Shipments.css";
+import "../../styles/Distributor/DistributorShipments.css";
 
 const API_URL = "http://localhost/Online_Shop";
 
@@ -77,7 +77,7 @@ const DistributorShipments = () => {
             className="modal-overlay"
             onClick={() => setPreviewImage(null)}
           >
-            <div className="modal-content">
+            <div className="modal-content-shipments">
               <img
                 src={previewImage}
                 alt="Preview Bukti"

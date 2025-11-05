@@ -1,0 +1,93 @@
+/* Layout */
+.distributor-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Navbar atas */
+.distributor-navbar {
+  background-color: #1e293b;
+  color: #fff;
+  padding: 15px 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Wrapper sidebar + konten */
+.distributor-main {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar */
+.distributor-sidebar {
+  width: 240px;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding-top: 20px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.distributor-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.distributor-sidebar ul li {
+  margin: 6px 0;
+}
+
+.distributor-sidebar ul li a,
+.distributor-sidebar ul li .logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #374151;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  font-size: 15px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.distributor-sidebar ul li a:hover,
+.distributor-sidebar ul li .logout-btn:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.distributor-sidebar ul li a.active {
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 500;
+}
+
+.distributor-sidebar ul li a.active .icon {
+  color: #fff;
+}
+
+.distributor-sidebar ul li .icon {
+  font-size: 18px;
+  color: #6b7280;
+  transition: color 0.25s ease;
+}
+
+.distributor-sidebar ul li a:hover .icon,
+.distributor-sidebar ul li .logout-btn:hover .icon {
+  color: #2563eb;
+}
+
+/* Konten utama */
+.distributor-content {
+  flex: 1;
+  padding: 24px;
+  background-color: #f8fafc;
+  overflow-y: auto;
+}

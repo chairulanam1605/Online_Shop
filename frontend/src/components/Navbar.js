@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MdAccountCircle } from "react-icons/md";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 
@@ -35,12 +36,16 @@ const Navbar = () => {
           <div className="navbar-auth">
             {userName ? (
               <div className="profile-wrapper">
-                <Link to="/profile" className="profile-icon" onClick={() => setMenuOpen(false)}>👤</Link>
+                <Link to="/profile" className="profile-icon" onClick={() => setMenuOpen(false)}>
+                <MdAccountCircle size={32}/>
+                </Link>
                 <span className="profile-name">{userName}</span>
               </div>
             ) : (
               <Link to="/login" className="nav-item auth-button" onClick={() => setMenuOpen(false)}>
-                <span className="auth-icon">👤</span> Masuk
+                <span className="auth-icon">
+                <MdAccountCircle size={32}/>  
+                </span> Masuk
               </Link>
             )}
           </div>

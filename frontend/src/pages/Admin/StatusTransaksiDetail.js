@@ -298,13 +298,13 @@ export default function StatusTransaksiDetail() {
 
         {/* Modal input pengiriman */}
         {showModal && (
-          <div className="modal-backdrop" onClick={() => setShowModal(false)}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <form onSubmit={submitShipping} className="modal-form">
-                <div className="form-section-title">📦 Data Distributor (Pengiriman)</div>
+          <div className="modal-backdrop-admin" onClick={() => setShowModal(false)}>
+            <div className="modal-admin" onClick={(e) => e.stopPropagation()}>
+              <form onSubmit={submitShipping} className="modal-form-admin">
+                <div className="form-section-title-admin">📦 Data Distributor (Pengiriman)</div>
 
-                <div className="form-row">
-                  <div className="form-group">
+                <div className="form-row-admin">
+                  <div className="form-group-admin">
                     <label>Nama Distributor</label>
                     <select
                       value={ship.distributor_id}
@@ -318,7 +318,7 @@ export default function StatusTransaksiDetail() {
                     </select>
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group-admin">
                     <label>No. Resi (otomatis)</label>
                     <input
                       type="text"
@@ -328,8 +328,8 @@ export default function StatusTransaksiDetail() {
                   </div>
                 </div>
 
-                <div className="form-row">
-                  <div className="form-group">
+                <div className="form-row-admin">
+                  <div className="form-group-admin">
                     <label>Tanggal Kirim</label>
                     <input
                       type="date"
@@ -339,7 +339,7 @@ export default function StatusTransaksiDetail() {
                     />
                   </div>
 
-                  <div className="form-group">
+                  <div className="form-group-admin">
                     <label>Catatan</label>
                     <textarea
                       rows={3}
@@ -350,7 +350,7 @@ export default function StatusTransaksiDetail() {
                   </div>
                 </div>
 
-                <div className="modal-actions">
+                <div className="modal-actions-admin">
                   <button type="button" className="btn-outline" onClick={() => setShowModal(false)}>Batal</button>
                   <button type="submit" className="btn">Simpan & Set Dikirim</button>
                 </div>

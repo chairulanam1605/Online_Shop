@@ -1,58 +1,144 @@
+.user-wrapper {
+  padding: 2rem;
+  background-color: #f9fafc;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #1f2937;
+}
 
-.data-user-container {
-  padding: 10px;
-  font-family: Arial, sans-serif;
+/* Header */
+.user-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.user-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-icon {
+  font-size: 2rem;
+  color: #3b82f6;
+  background: #e0ecff;
+  padding: 0.8rem;
+  border-radius: 12px;
+}
+
+.user-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.user-header p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Table */
+.user-table-container {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
 }
 
 .user-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.user-table th{
-    border: 1px solid #ddd;
-    padding: 12px 15px;
-    text-align: center;
-}
-
-.user-table td {
-  border: 1px solid #ddd;
-  padding: 12px 15px;
-  text-align: justify;
+.user-table thead {
+  background-color: #f1f5f9;
 }
 
 .user-table th {
-  background-color: #2c3e50;
-  color: white;
-  font-weight: bold;
+  padding: 0.9rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
 }
 
-.user-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+.user-table td {
+  padding: 0.8rem;
+  border-top: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.9rem;
+  vertical-align: middle;
 }
 
-.user-table tr:hover {
-  background-color: #f1f1f1;
+.user-table tr:hover td {
+  background-color: #f9fafb;
 }
 
-.user-table img {
-  border-radius: 8px;
+/* Gambar profil */
+.user-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #e5e7eb;
 }
 
-.hapus-button {
-  background-color: #e74c3c;
-  color: white;
+.no-photo {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Tombol hapus */
+.hapus-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #ef4444;
+  color: #fff;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
 }
 
-.hapus-button:hover {
-  background-color: #c0392b;
+.hapus-btn:hover {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* Alamat panjang */
+.alamat {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Baris kosong */
+.empty-row td {
+  text-align: center;
+  padding: 1rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .user-wrapper {
+    padding: 1rem;
+  }
+
+  .user-table th,
+  .user-table td {
+    font-size: 0.85rem;
+  }
 }

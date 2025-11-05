@@ -1,0 +1,101 @@
+.shipments-container {
+  padding: 24px;
+  background: #f9fafc;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.shipments-container h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 20px;
+}
+
+/* Table */
+.shipments-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.shipments-container th,
+.shipments-container td {
+  padding: 14px 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.shipments-container th {
+  background: #1f2937;
+  color: white;
+  font-weight: 500;
+}
+
+.shipments-container tr:nth-child(even) {
+  background: #f9fafc;
+}
+
+.shipments-container tr:hover {
+  background: #f3f4f6;
+}
+
+/* Thumbnail bukti foto */
+.proof-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.proof-thumbnail:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Modal Preview Foto */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 24, 39, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.modal-content-shipments {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.proof-full {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .shipments-container table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

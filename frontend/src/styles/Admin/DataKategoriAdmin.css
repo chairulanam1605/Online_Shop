@@ -1,69 +1,146 @@
-.data-kategori {
-  padding: 10px;
-  background-color: #f9f9f9;
+.kategori-wrapper {
+  padding: 2rem;
+  background-color: #f9fafc;
   min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #1f2937;
 }
 
-.data-kategori h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
+/* Header */
+.kategori-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
+.kategori-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.kategori-icon {
+  font-size: 2rem;
+  color: #3b82f6;
+  background: #e0ecff;
+  padding: 0.8rem;
+  border-radius: 12px;
+}
+
+.kategori-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.kategori-header p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Tombol tambah kategori */
 .tambah-kategori-btn {
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #3b82f6;
+  color: #fff;
   border: none;
-  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .tambah-kategori-btn:hover {
-  background-color: #d89f00;
+  background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
-table {
+/* Table */
+.kategori-table-container {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.kategori-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-th {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  text-align: center;
+.kategori-table thead {
+  background-color: #f1f5f9;
 }
 
-td {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
+.kategori-table th {
+  padding: 0.9rem;
   text-align: left;
-}
-
-th {
-  background-color: #2c3e50;
-  color: white;
   font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
 }
 
-tr:hover {
-  background-color: #f5f5f5;
+.kategori-table td {
+  padding: 0.8rem;
+  border-top: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.9rem;
 }
 
+.kategori-table tr:hover td {
+  background-color: #f9fafb;
+}
+
+/* Tombol hapus */
 .hapus-btn {
-  background-color: #ff4d4d;
-  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #ef4444;
+  color: #fff;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
+  font-weight: 500;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
 }
 
 .hapus-btn:hover {
-  background-color: #cc0000;
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* Baris kosong */
+.empty-row td {
+  text-align: center;
+  padding: 1rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .kategori-wrapper {
+    padding: 1rem;
+  }
+
+  .tambah-kategori-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .kategori-table th,
+  .kategori-table td {
+    font-size: 0.85rem;
+  }
 }

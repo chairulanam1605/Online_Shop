@@ -1,7 +1,10 @@
+// src/pages/ProductDetail.js
 import React, { useEffect, useState } from "react";
+import { BsCart4 } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import "../styles/ProductDetail.css";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 const API_URL = "http://localhost/Online_Shop";
 
@@ -20,32 +23,55 @@ const ProductDetail = () => {
     fetch(`${API_URL}/cart`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: userId, product_id: product.id, quantity: 1 }),
+      body: JSON.stringify({
+        user_id: userId,
+        product_id: product.id,
+        quantity: 1,
+      }),
     }).then(() => alert("Produk ditambahkan ke keranjang!"));
   };
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <p>Memuat detail produk...</p>;
 
   return (
     <>
-      <div className="product-detail-container">
-        <div className="product-detail-card">
-          <div className="product-image-section">
-            <img src={product.image_url} alt={product.name} className="main-image" />
+      <Navbar />
+      <div className="product-detail-page">
+        <div className="product-card-detail">
+          {/* Gambar Produk */}
+          <div className="product-image">
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="main-image"
+            />
           </div>
 
-          <div className="product-info-section">
-            <h1 className="product-title">{product.name}</h1>
-            <p className="product-price-details">Rp{parseInt(product.price).toLocaleString()}</p>
-            <p className="product-desc">{product.description}</p>
-            <p><strong>Kategori:</strong> {product.category_name}</p>
-            <p><strong>Stock:</strong> {product.unit_label}</p>
+          {/* Informasi Produk */}
+          <div className="product-info">
+            <h1 className="product-name">{product.name}</h1>
+            <h2 className="product-price">
+              Rp {parseInt(product.price).toLocaleString("id-ID")}
+            </h2>
 
-            <button onClick={addToCart} className="add-to-cart-btn">Tambah ke Keranjang</button>
+            <p className="product-description">{product.description}</p>
+
+            <div className="product-meta">
+              <p>
+                <strong>Kategori:</strong> {product.category_name}
+              </p>
+              <p>
+                <strong>Stok:</strong> {product.unit_label}
+              </p>
+            </div>
+
+            <button onClick={addToCart} className="btn-add-cart">
+              <BsCart4 size={25}/>Tambah ke Keranjang
+            </button>
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

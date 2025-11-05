@@ -42,6 +42,16 @@ const RiwayatTransaksi = () => {
     setFiltered(filteredData);
   };
 
+  // === Tambahkan fungsi format tanggal ===
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "-";
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   return (
     <Sidebard>
       <div className="riwayat-container">
@@ -73,7 +83,7 @@ const RiwayatTransaksi = () => {
               <th>Produk</th>
               <th>Jumlah</th>
               <th>Total</th>
-              <th>Status</th> {/* kolom baru */}
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -81,12 +91,15 @@ const RiwayatTransaksi = () => {
               <tr key={index}>
                 <td>{item.transaction_id}</td>
                 <td>{item.user_name}</td>
-                <td>{new Date(item.created_at).toLocaleDateString()}</td>
+                {/* Ubah bagian tanggal */}
+                <td>{formatTanggal(item.created_at)}</td>
                 <td>{item.product_name}</td>
                 <td>{parseInt(item.quantity)}</td>
                 <td>Rp.{item.price * item.quantity}</td>
                 <td>
-                  <span className={`status-badge status-${item.status?.toLowerCase()}`}>
+                  <span
+                    className={`status-badge-admin status-${item.status?.toLowerCase()}`}
+                  >
                     {item.status}
                   </span>
                 </td>

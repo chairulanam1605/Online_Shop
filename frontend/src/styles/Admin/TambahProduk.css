@@ -1,47 +1,92 @@
 .tambah-produk {
-  padding: 20px;
-  background: #f9f9f9;
-  max-width: 600px;
-  margin: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  color: #111827;
 }
 
+/* Judul */
 .tambah-produk h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
 }
 
+/* Form container */
 .tambah-produk form {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  gap: 18px;
 }
 
+/* Label */
 .tambah-produk label {
-  margin-top: 10px;
-  font-weight: bold;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 4px;
 }
 
-.tambah-produk input,
-.tambah-produk textarea,
-.tambah-produk select {
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+/* Input umum */
+.tambah-produk input[type="text"],
+.tambah-produk input[type="number"],
+.tambah-produk input[type="file"],
+.tambah-produk select,
+.tambah-produk textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  font-size: 1rem;
+  transition: all 0.2s ease;
 }
 
-.submit-btn {
-  margin-top: 20px;
-  padding: 12px;
-  background: green;
-  color: white;
+/* Hover & focus state */
+.tambah-produk input:focus,
+.tambah-produk select:focus,
+.tambah-produk textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Textarea lebih besar */
+.tambah-produk textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Tombol submit */
+.tambah-produk .submit-btn {
+  background-color: #2563eb;
+  color: #ffffff;
   border: none;
   border-radius: 10px;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.2s ease;
 }
 
-.submit-btn:hover {
-  background: green;
+.tambah-produk .submit-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .tambah-produk form {
+    padding: 20px;
+    gap: 14px;
+  }
 }

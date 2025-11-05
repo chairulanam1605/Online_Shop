@@ -1,172 +1,189 @@
-.product-detail-container {
-  margin: 10% 0;
-  background-color: #f9f9f9;
-  min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.product-detail-card {
+/* ===== Halaman Detail Produk ===== */
+.product-detail-page {
   display: flex;
-  gap: 40px;
-  background-color: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #f1eaea;
+  min-height: 80vh;
 }
 
-.product-image-section {
-  flex: 1;
+/* ===== Kartu utama ===== */
+.product-card-detail {
+  display: flex;
+  gap: 60px;
+  background-color: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  padding: 40px 50px;
+  max-width: 1100px;
+  width: 100%;
+  flex-wrap: wrap;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.main-image {
-  max-width: 80%;
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Gambar Produk ===== */
+.product-image {
+  flex: 1 1 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.product-image img {
+  max-width: 100%;
   height: auto;
-  border-radius: 10px;
+  border-radius: 14px;
   object-fit: contain;
-  border: 1px solid #ddd;
+  transition: transform 0.3s ease;
 }
 
-.thumbnail-row {
-  margin-top: 12px;
-  display: flex;
-  gap: 12px;
+.product-image img:hover {
+  transform: scale(1.05);
 }
 
-.thumb {
-  width: 60px;
-  height: 60px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  object-fit: cover;
-  cursor: pointer;
-}
-
-.product-info-section {
-  flex: 1;
+/* ===== Informasi Produk ===== */
+.product-info {
+  flex: 1 1 50%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: center;
+  text-align: justify;
+  text-justify: inter-word;
+  padding-right: 10px;
 }
 
-.product-title {
-  font-size: 28px;
-  font-weight: bold;
+/* ===== Nama Produk ===== */
+.product-name {
+  font-size: 2.2rem;
+  font-weight: 700;
   color: #222;
+  margin-bottom: 10px;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
-.product-price-details {
-  font-size: 24px;
-  color: #e91e63;
+/* ===== Harga ===== */
+.product-price {
+  color: #e63946;
+  font-size: 1.9rem;
   font-weight: bold;
+  margin-bottom: 20px;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
-.product-desc {
-  font-size: 16px;
-  color: #555;
+/* ===== Deskripsi ===== */
+.product-description {
+  color: #444;
+  line-height: 1.7;
+  font-size: 15.5px;
+  margin-bottom: 20px;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
-.add-to-cart-btn {
-  margin-top: 20px;
-  padding: 12px 24px;
-  font-size: 16px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.add-to-cart-btn:hover {
-  background-color: #218838;
-}
-
+/* ===== Info Tambahan ===== */
 .product-meta {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #666;
+  margin-bottom: 30px;
+  font-size: 15px;
+  color: #333;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
-.tab-section {
-  margin-top: 30px;
-  display: flex;
-  gap: 20px;
+.product-meta p {
+  margin: 6px 0;
 }
 
-.tab-btn {
-  padding: 10px 20px;
-  background-color: #eee;
+.product-meta strong {
+  color: #111;
+}
+
+/* ===== Tombol Tambah ke Keranjang ===== */
+.btn-add-cart {
+  background-color: #c89c00;
+  color: #fff;
   border: none;
   border-radius: 8px;
+  font-weight: 600;
+  padding: 14px 28px;
+  font-size: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  align-self: center;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
-.tab-btn.active {
-  background-color: #ddd;
-  font-weight: bold;
+.btn-add-cart:hover {
+  background-color: #b48900;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
 }
 
-/* Media Query untuk layar tablet dan mobile */
-@media (max-width: 768px) {
-  .product-detail-card {
+/* ===== Ikon Keranjang (sejajar dan lebih menarik) ===== */
+.btn-add-cart svg {
+  vertical-align: middle; /* sejajarkan ikon dengan teks */
+  margin-right: 6px;
+  color: #ffffff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+  transition: transform 0.25s ease, color 0.3s ease;
+}
+
+.btn-add-cart:hover svg {
+  color: #fdfdfd;
+  transform: scale(1.15) rotate(-3deg);
+}
+
+/* ===== Responsif untuk Tablet & Mobile ===== */
+@media (max-width: 992px) {
+  .product-card-detail {
     flex-direction: column;
-    padding: 20px;
+    align-items: center;
+    padding: 30px;
   }
 
-  .main-image {
-    max-width: 100%;
-    height: auto;
-  }
-
-  .thumbnail-row {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .product-info-section {
-    gap: 12px;
-  }
-
-  .product-title {
-    font-size: 22px;
-    text-align: center;
-  }
-
-  .product-price-details {
-    font-size: 20px;
-    text-align: center;
-  }
-
-  .product-desc, .product-meta, .product-info-section p {
-    font-size: 14px;
-    text-align: center;
-  }
-
-  .add-to-cart-btn {
-    align-self: center;
+  .product-image {
     width: 100%;
-    max-width: 300px;
+    margin-bottom: 25px;
+  }
+
+  .product-info {
+    width: 100%;
+    padding: 0;
+  }
+
+  .btn-add-cart {
+    width: 100%;
+    justify-content: center;
+    align-self: center;
   }
 }
 
-/* Media Query untuk layar sangat kecil (misal <480px) */
-@media (max-width: 480px) {
-  .thumb {
-    width: 50px;
-    height: 50px;
+@media (max-width: 576px) {
+  .product-name {
+    font-size: 1.7rem;
   }
 
-  .add-to-cart-btn {
+  .product-price {
+    font-size: 1.5rem;
+  }
+
+  .product-description {
     font-size: 14px;
-    padding: 10px 20px;
-  }
-
-  .product-title {
-    font-size: 20px;
-  }
-
-  .product-price-details {
-    font-size: 18px;
   }
 }
